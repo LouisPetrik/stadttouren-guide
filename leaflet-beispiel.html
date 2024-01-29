@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+    />
+
+    <style>
+      .map {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script>
+      var map = L.map('map').setView([52.151222, 9.961226], 13)
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+      }).addTo(map)
+
+      var routingControl = L.Routing.control({
+        waypoints: [
+          L.latLng(52.151222, 9.961226),
+          L.latLng(52.149834, 9.959004),
+        ],
+        routeWhileDragging: true,
+        geocoder: L.Control.Geocoder.nominatim(),
+      }).addTo(map)
+
+      function onMapClick(e) {
+        routingControl.spliceWaypoints(
+          routingControl.getWaypoints().length - 1,
+          0,
+          e.latlng
+        )
+      }
+
+      map.on('click', onMapClick)
+    </script>
+  </body>
+</html>

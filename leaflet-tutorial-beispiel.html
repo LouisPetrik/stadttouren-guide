@@ -1,0 +1,103 @@
+<!-- Basis des Codes aus dem Leaflet-routing machine tutorial -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Leaflet Routing Machine Example</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+    />
+    <style>
+      .map {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script>
+      var map = L.map('map')
+
+      // initlaisiert eine Karte, basierend auf Open Street Map
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+      }).addTo(map)
+
+      // Ist das control-menü auf der die wege für die Route angezeigt werden.
+      L.Routing.control({
+        // Initialer startpunkt der route. Definiert, auf welchen Punkten die Route liegt.
+        waypoints: [
+          L.latLng(52.151222, 9.961226),
+          L.latLng(52.149834, 9.959004),
+        ],
+        routeWhileDragging: true,
+      }).addTo(map)
+
+      // Funktion, um einen Button auf der Karte, nach Klick auf einen Punkt, anzuzeigen.
+      function buttonZeigen(label, container) {
+        const btn = L.DomUtil.create('button', '', container)
+        btn.setAttribute('type', 'button')
+        btn.innerHTML = label
+        return btn
+      }
+
+      // Stanard-Klick handler
+      map.on('click', function (e) {
+        var container = L.DomUtil.create('div')
+        var startBtn = buttonZeigen('Von diesem Punkt aus starten', container)
+        var destBtn = buttonZeigen('Zu diesem Punkt führen', container)
+
+        // .openOn() ist eine Funktion, die das Popup auf der Karte anzeigt.
+        L.popup().setContent(container).setLatLng(e.latlng).openOn(map)
+
+        var ReversablePlan = L.Routing.Plan.extend({
+          createGeocoders: function () {
+            var container = L.Routing.Plan.prototype.createGeocoders.call(this),
+              reverseButton = createButton('↑↓', container)
+            return container
+          },
+        })
+
+        var plan = new ReversablePlan(
+          [L.latLng(57.74, 11.94), L.latLng(57.6792, 11.949)],
+          {
+            geocoder: L.Control.Geocoder.nominatim(),
+            routeWhileDragging: true,
+          }
+        )
+
+        var control = L.Routing.control({
+          routeWhileDragging: true,
+          plan: plan,
+        }).addTo(map1)
+
+        L.DomEvent.on(startBtn, 'click', function () {
+          // verändert den Startpunkt der Route
+          control.spliceWaypoints(0, 1, e.latlng)
+          map1.closePopup()
+        })
+
+        L.DomEvent.on(destBtn, 'click', function () {
+          // zurücksetzen des zielpunktes (length -1), damit der letzte punkt, also der zielpunkt genutzt wird.
+          control.spliceWaypoints(
+            control.getWaypoints().length - 1,
+            1,
+            e.latlng
+          )
+          map1.closePopup()
+        })
+      })
+
+      // alternative koordinaten um GPS zu testen:
+    </script>
+  </body>
+</html>

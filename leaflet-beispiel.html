@@ -1,4 +1,3 @@
-<!-- Selbst erstellter code als beispiel -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,13 +28,17 @@
     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
     <script>
+      // Initialisiert die Karte und setzt die Ansicht auf einen spezifischen Punkt und Zoomlevel
       var map = L.map('map').setView([52.151222, 9.961226], 13)
 
+      // Lädt und zeigt das Basis-Kartenmaterial von OpenStreetMap
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
       }).addTo(map)
 
+      // Routing-Control-Initialisierung mit Start- und Endpunkt
       var routingControl = L.Routing.control({
         waypoints: [
           L.latLng(52.151222, 9.961226),
@@ -43,9 +46,16 @@
         ],
         routeWhileDragging: true,
         geocoder: L.Control.Geocoder.nominatim(),
+
+        router: new L.Routing.osrmv1({
+          serviceUrl: 'http://localhost:5000/route/v1',
+          profile: 'foot',
+        }),
       }).addTo(map)
 
+      // Funktion, die bei einem Klick auf die Karte aufgerufen wird
       function onMapClick(e) {
+        // Fügt einen neuen Wegpunkt am Ort des Klicks hinzu
         routingControl.spliceWaypoints(
           routingControl.getWaypoints().length - 1,
           0,
@@ -53,6 +63,7 @@
         )
       }
 
+      // Event-Listener, der auf Klicks auf der Karte reagiert
       map.on('click', onMapClick)
     </script>
   </body>

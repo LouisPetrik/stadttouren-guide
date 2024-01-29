@@ -38,6 +38,15 @@
         attribution: '© OpenStreetMap contributors',
       }).addTo(map)
 
+      function removeWaypoint(index) {
+        var waypoints = routingControl.getWaypoints()
+        if (waypoints.length > 2) {
+          // Verhindern, dass die letzten zwei Wegpunkte entfernt werden
+          waypoints.splice(index, 1)
+          routingControl.setWaypoints(waypoints)
+        }
+      }
+
       // Routing-Control-Initialisierung mit Start- und Endpunkt
       var routingControl = L.Routing.control({
         waypoints: [
@@ -46,6 +55,19 @@
         ],
         routeWhileDragging: true,
         geocoder: L.Control.Geocoder.nominatim(),
+
+        createMarker: function (i, waypoint, n) {
+          var marker = L.marker(waypoint.latLng, {
+            draggable: true,
+          })
+
+          // Event-Listener für das Klicken auf den Marker
+          marker.on('click', function () {
+            removeWaypoint(i)
+          })
+
+          return marker
+        },
 
         router: new L.Routing.osrmv1({
           serviceUrl: 'http://localhost:5000/route/v1',

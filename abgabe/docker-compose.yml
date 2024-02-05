@@ -14,7 +14,7 @@ services:
   web:
     image: nginx:alpine
     volumes:
-      - ./web:/usr/share/nginx/html:ro
+      - ./client:/usr/share/nginx/html:ro
     ports:
       - "80:80"
 

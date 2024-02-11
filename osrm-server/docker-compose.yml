@@ -12,3 +12,6 @@ services:
       osrm-customize /data/niedersachsen-latest.osrm && \
       osrm-routed --algorithm mld /data/niedersachsen-latest.osrm"
 
+
+      
+

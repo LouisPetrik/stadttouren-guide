@@ -1,4 +1,6 @@
 /osrm-server/data
 /abgabe/data  
 
+node_modules
+
 .DS_Store 

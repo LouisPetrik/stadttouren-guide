@@ -4,6 +4,8 @@ const LocalStrategy = require('passport-local').Strategy
 const bodyParser = require('body-parser')
 const session = require('express-session')
 
+const benutzerRoutes = require('./routes/benutzer')
+
 const app = express()
 const PORT = 3000
 
@@ -53,42 +55,7 @@ app.get('/', (req, res) => {
   res.send('<h1>Startseite</h1><a href="/login">Login</a>')
 })
 
-app.get('/login', (req, res) => {
-  res.send(
-    '<form action="/login" method="post"><div><label>Email:</label><input type="text" name="email"/><br/></div><div><label>Password:</label><input type="password" name="password"/></div><div><input type="submit" value="Log In"/></div></form>'
-  )
-})
-
-app.post(
-  '/login',
-  passport.authenticate('local', {
-    successRedirect: '/profile',
-    failureRedirect: '/login',
-  })
-)
-
-app.get('/profile', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.send('<h1>Dein Profil</h1><a href="/logout">Logout</a>')
-  } else {
-    res.redirect('/login')
-  }
-})
-
-app.get('/logout', (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err)
-    }
-    req.session.destroy(function (err) {
-      if (err) {
-        console.log('Error: Session loeschen fehlgeschlagen', err)
-      }
-      req.user = null
-      res.redirect('/')
-    })
-  })
-})
+app.use(benutzerRoutes)
 
 // Start server
 app.listen(PORT, () => {

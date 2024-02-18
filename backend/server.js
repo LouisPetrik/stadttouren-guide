@@ -38,9 +38,6 @@ app.use((req, res, next) => {
 // testweise DB funktion ausführen
 // getBenutzer(db).then((res) => console.log(res))
 
-// Dummy users array
-const users = [{ id: 1, email: 'user@example.com', password: 'password' }]
-
 // Passport Local Strategy
 passport.use(
   new LocalStrategy(
@@ -48,18 +45,21 @@ passport.use(
       usernameField: 'email',
       passwordField: 'password',
     },
-    function (email, password, done) {
-      // muss noch eresetzt werden mit DB und Hashing dafür
-      const user = users.find(
-        (user) => user.email === email && user.password === password
-      )
-      if (!user) {
-        // muss wohl noch im Frontend angezeigt werden mit Flash (oder redirect?)
-        return done(null, false, { message: 'Falsche E-Mail oder Passwort.' })
-      }
 
-      // Wenn alles passt, dann wird der User eingeloggt
-      return done(null, user)
+    function (email, password, done) {
+      // Prüfen ob der nutzer in der DB existiert
+      const benutzer = passwortPruefen(db, email, password)
+      // benutzer ist promise
+      benutzer.then((result) => {
+        console.log('Anmeldungs-resultat: ', result, result.length)
+
+        // koennte noch sauberer gemacht werden
+        if (result.length === 0) {
+          return done(null, false, { message: 'Falsche E-Mail oder Passwort.' })
+        } else {
+          return done(null, result)
+        }
+      })
     }
   )
 )
@@ -84,6 +84,8 @@ app.get('/', (req, res) => {
   res.send('<h1>Startseite</h1><a href="/login">Login</a>')
 })
 
+// NUR ZUM TESTEN
+
 app.get('/benutzer-erstellen', (req, res) => {
   benutzerAnlegen(db, 'test', 'test', 'test@web.de')
   res.send('Benutzer erstellt')
@@ -97,6 +99,9 @@ app.get('/passwort-pruefen', (req, res) => {
   passwortPruefen(db, 'testnutzer', '123456').then((result) => res.json(result))
 })
 
+// NUR ZUM TESTEN ENDE
+
+// routen unter routes/benutzer.js
 app.use(benutzerRoutes)
 
 // Start server

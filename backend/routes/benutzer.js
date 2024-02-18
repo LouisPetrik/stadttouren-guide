@@ -1,7 +1,16 @@
 const express = require('express')
-
+const bcrypt = require('bcrypt')
 const passport = require('passport')
 const router = express.Router()
+const {
+  benutzerAnlegen,
+  getBenutzer,
+  benutzerLoeschen,
+  passwortPruefen,
+  passwortAendern,
+} = require('../db')
+
+const saltRounds = 10
 
 router.get('/login', (req, res) => {
   res.send(
@@ -16,6 +25,10 @@ router.post(
     failureRedirect: '/login',
   })
 )
+
+router.get('/benutzer-liste', (req, res) => {
+  getBenutzer(req.db).then((result) => res.json(result))
+})
 
 router.get('/profile', (req, res) => {
   if (req.isAuthenticated()) {

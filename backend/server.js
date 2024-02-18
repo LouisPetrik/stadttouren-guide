@@ -20,7 +20,7 @@ const app = express()
 const PORT = 3000
 
 // Anlegen der Verbindung
-const pool = new Pool({
+const db = new Pool({
   user: 'meinBenutzer',
   host: 'localhost',
   database: 'meineDatenbank',
@@ -28,8 +28,15 @@ const pool = new Pool({
   port: 5432,
 })
 
+// Anlegen einer Middleware, um die DB Verbindung an die Requests zu übergeben
+// so muss nicht in jeder Route die DB Verbindung neu hergestellt werden
+app.use((req, res, next) => {
+  req.db = db
+  next()
+})
+
 // testweise DB funktion ausführen
-// getBenutzer(pool).then((res) => console.log(res))
+// getBenutzer(db).then((res) => console.log(res))
 
 // Dummy users array
 const users = [{ id: 1, email: 'user@example.com', password: 'password' }]
@@ -78,18 +85,16 @@ app.get('/', (req, res) => {
 })
 
 app.get('/benutzer-erstellen', (req, res) => {
-  benutzerAnlegen(pool, 'test', 'test', 'test@web.de')
+  benutzerAnlegen(db, 'test', 'test', 'test@web.de')
   res.send('Benutzer erstellt')
 })
 
 app.get('/benutzer', (req, res) => {
-  getBenutzer(pool).then((result) => res.json(result))
+  getBenutzer(db).then((result) => res.json(result))
 })
 
 app.get('/passwort-pruefen', (req, res) => {
-  passwortPruefen(pool, 'testnutzer', '123456').then((result) =>
-    res.json(result)
-  )
+  passwortPruefen(db, 'testnutzer', '123456').then((result) => res.json(result))
 })
 
 app.use(benutzerRoutes)

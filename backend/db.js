@@ -1,8 +1,8 @@
-// const { Pool } = require('pg')
+// const { db } = require('pg')
 
 // nutzer in die datenbank schreiben
-const benutzerAnlegen = async (pool, benutzername, passwort, email) => {
-  const res = await pool.query(
+const benutzerAnlegen = async (db, benutzername, passwort, email) => {
+  const res = await db.query(
     'INSERT INTO benutzer (benutzername, passwort, email) VALUES ($1, $2, $3) RETURNING *',
     [benutzername, passwort, email]
   )
@@ -10,22 +10,22 @@ const benutzerAnlegen = async (pool, benutzername, passwort, email) => {
 }
 
 // write a function that returns all users from the database
-const getBenutzer = async (pool) => {
-  const res = await pool.query('SELECT * FROM benutzer')
+const getBenutzer = async (db) => {
+  const res = await db.query('SELECT * FROM benutzer')
   return res.rows
 }
 
 // Dafür, wenn der Nutzer seinen account schließen will
-const benutzerLoeschen = async (pool, benutzername) => {
-  const res = await pool.query('DELETE FROM benutzer WHERE benutzername = $1', [
+const benutzerLoeschen = async (db, benutzername) => {
+  const res = await db.query('DELETE FROM benutzer WHERE benutzername = $1', [
     benutzername,
   ])
   return res.rows
 }
 
 // Passwort prüfung bei der Anmeldung. Hasht das Passwort und vergleicht es mit dem in der Datenbank
-const passwortPruefen = async (pool, benutzername, passwort) => {
-  const res = await pool.query(
+const passwortPruefen = async (db, benutzername, passwort) => {
+  const res = await db.query(
     'SELECT * FROM benutzer WHERE benutzername = $1 AND passwort = $2',
     [benutzername, passwort]
   )
@@ -33,8 +33,8 @@ const passwortPruefen = async (pool, benutzername, passwort) => {
 }
 
 // Passwort ändern
-const passwortAendern = async (pool, benutzername, passwort) => {
-  const res = await pool.query(
+const passwortAendern = async (db, benutzername, passwort) => {
+  const res = await db.query(
     'UPDATE benutzer SET passwort = $1 WHERE benutzername= $2',
     [passwort, benutzername]
   )

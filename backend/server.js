@@ -3,11 +3,33 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const { Pool } = require('pg')
 
 const benutzerRoutes = require('./routes/benutzer')
 
+// importieren der Datenbank Funktionen
+const {
+  benutzerAnlegen,
+  getBenutzer,
+  benutzerLoeschen,
+  passwortPruefen,
+  passwortAendern,
+} = require('./db')
+
 const app = express()
 const PORT = 3000
+
+// Anlegen der Verbindung
+const pool = new Pool({
+  user: 'meinBenutzer',
+  host: 'localhost',
+  database: 'meineDatenbank',
+  password: 'meinPasswort',
+  port: 5432,
+})
+
+// testweise DB funktion ausführen
+// getBenutzer(pool).then((res) => console.log(res))
 
 // Dummy users array
 const users = [{ id: 1, email: 'user@example.com', password: 'password' }]
@@ -53,6 +75,21 @@ app.use(passport.session())
 
 app.get('/', (req, res) => {
   res.send('<h1>Startseite</h1><a href="/login">Login</a>')
+})
+
+app.get('/benutzer-erstellen', (req, res) => {
+  benutzerAnlegen(pool, 'test', 'test', 'test@web.de')
+  res.send('Benutzer erstellt')
+})
+
+app.get('/benutzer', (req, res) => {
+  getBenutzer(pool).then((result) => res.json(result))
+})
+
+app.get('/passwort-pruefen', (req, res) => {
+  passwortPruefen(pool, 'testnutzer', '123456').then((result) =>
+    res.json(result)
+  )
 })
 
 app.use(benutzerRoutes)

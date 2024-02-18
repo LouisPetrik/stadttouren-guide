@@ -24,7 +24,7 @@ const benutzerLoeschen = async (db, benutzername) => {
 }
 
 // Passwort prüfung bei der Anmeldung. Hasht das Passwort und vergleicht es mit dem in der Datenbank
-const passwortPruefen = async (db, email, passwort) => {
+const benutzerPruefen = async (db, email, passwort) => {
   const res = await db.query(
     'SELECT * FROM benutzer WHERE email = $1 AND passwort = $2',
     [email, passwort]
@@ -46,6 +46,6 @@ module.exports = {
   benutzerAnlegen,
   getBenutzer,
   benutzerLoeschen,
-  passwortPruefen,
+  benutzerPruefen,
   passwortAendern,
 }

@@ -6,7 +6,7 @@ const {
   benutzerAnlegen,
   getBenutzer,
   benutzerLoeschen,
-  passwortPruefen,
+  benutzerPruefen,
   passwortAendern,
 } = require('../db')
 

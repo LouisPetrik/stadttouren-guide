@@ -12,7 +12,7 @@ const {
   benutzerAnlegen,
   getBenutzer,
   benutzerLoeschen,
-  passwortPruefen,
+  benutzerPruefen,
   passwortAendern,
 } = require('./db')
 
@@ -47,22 +47,17 @@ passport.use(
       passwordField: 'password',
     },
 
-    function (email, password, done) {
+    async function (email, password, done) {
       // Prüfen ob der nutzer in der DB existiert
-      const benutzer = passwortPruefen(db, email, password)
+      const [benutzer] = await benutzerPruefen(db, email, password)
       // benutzer ist promise
-      benutzer.then((result) => {
-        console.log('Anmeldungs-resultat: ', result, result.length)
+      console.log('Benutzer: ', benutzer)
 
-        // result in ein objekt umwandeln
+      if (!benutzer) {
+        return done(null, false, { message: 'Falsche E-Mail oder Passwort.' })
+      }
 
-        // koennte noch sauberer gemacht werden
-        if (result.length === 0) {
-          return done(null, false, { message: 'Falsche E-Mail oder Passwort.' })
-        } else {
-          return done(null, result[0])
-        }
-      })
+      return done(null, benutzer)
     }
   )
 )
@@ -72,13 +67,10 @@ passport.serializeUser(function (user, done) {
   done(null, user.id)
 })
 
-passport.deserializeUser(function (id, done) {
-  // const user = users.find((user) => user.id === id)
-  const user = getBenutzer(db, id).then((result) => {
-    done(null, result)
+passport.deserializeUser(async function (id, done) {
+  getBenutzer(db, id).then((benutzer) => {
+    done(null, benutzer)
   })
-
-  // done(null, user)
 })
 
 // Middlewares
@@ -103,7 +95,7 @@ app.get('/benutzer', (req, res) => {
 })
 
 app.get('/passwort-pruefen', (req, res) => {
-  passwortPruefen(db, 'testnutzer', '123456').then((result) => res.json(result))
+  benutzerPruefen(db, 'testnutzer', '123456').then((result) => res.json(result))
 })
 
 // NUR ZUM TESTEN ENDE

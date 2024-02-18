@@ -35,10 +35,11 @@ app.use((req, res, next) => {
   next()
 })
 
-// testweise DB funktion ausführen
-// getBenutzer(db).then((res) => console.log(res))
+// Es muss ein JS objekt mit id, email, password für den user erstellt werden für den user
 
-// Passport Local Strategy
+// Dummy users array
+// const users = [{ id: 1, email: 'user@example.com', password: 'password' }]
+
 passport.use(
   new LocalStrategy(
     {
@@ -53,11 +54,13 @@ passport.use(
       benutzer.then((result) => {
         console.log('Anmeldungs-resultat: ', result, result.length)
 
+        // result in ein objekt umwandeln
+
         // koennte noch sauberer gemacht werden
         if (result.length === 0) {
           return done(null, false, { message: 'Falsche E-Mail oder Passwort.' })
         } else {
-          return done(null, result)
+          return done(null, result[0])
         }
       })
     }
@@ -70,8 +73,12 @@ passport.serializeUser(function (user, done) {
 })
 
 passport.deserializeUser(function (id, done) {
-  const user = users.find((user) => user.id === id)
-  done(null, user)
+  // const user = users.find((user) => user.id === id)
+  const user = getBenutzer(db, id).then((result) => {
+    done(null, result)
+  })
+
+  // done(null, user)
 })
 
 // Middlewares

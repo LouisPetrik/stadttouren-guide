@@ -71,4 +71,31 @@ router.get('/logout', (req, res, next) => {
   })
 })
 
+router.post('/account-loeschen', async (req, res) => {
+  // Benutzername aus der Session holen
+  const benutzername = req.user[0].benutzername
+  const email = req.user[0].email
+
+  console.log(benutzername, 'wird gelöscht')
+  console.log('Email: ', email)
+
+  // überprüfen, ob passwort korrekt ist
+  const passwort = req.body.passwort
+  console.log('Passwort: ', passwort)
+  // hier muss statt des Benutzernamens die E-Mail übergeben werden - email, passwort
+  const [benutzer] = await benutzerPruefen(req.db, email, passwort)
+  console.log('Benutzer: ', benutzer)
+
+  if (!benutzer) {
+    res.send('Passwort ist falsch')
+    return
+  } else {
+    await benutzerLoeschen(req.db, benutzername)
+    res.redirect('/login')
+  }
+
+  //await benutzerLoeschen(req.db, benutzername)
+  //res.redirect('/login')
+})
+
 module.exports = router

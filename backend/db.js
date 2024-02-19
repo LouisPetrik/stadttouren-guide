@@ -23,6 +23,7 @@ const getBenutzerById = async (db, id) => {
 }
 
 // Dafür, wenn der Nutzer seinen account schließen will
+// Sollte vielleicht auf email umgestellt werden
 const benutzerLoeschen = async (db, benutzername) => {
   const res = await db.query('DELETE FROM benutzer WHERE benutzername = $1', [
     benutzername,

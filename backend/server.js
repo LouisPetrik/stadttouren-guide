@@ -4,6 +4,7 @@ const LocalStrategy = require('passport-local').Strategy
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const { Pool } = require('pg')
+const { engine } = require('express-handlebars')
 
 const benutzerRoutes = require('./routes/benutzer')
 
@@ -34,6 +35,11 @@ app.use((req, res, next) => {
   req.db = db
   next()
 })
+
+// Handlebars als templating engine registieren
+app.engine('handlebars', engine())
+app.set('view engine', 'handlebars')
+app.set('views', './views')
 
 // Es muss ein JS objekt mit id, email, password für den user erstellt werden für den user
 
@@ -83,6 +89,10 @@ app.use(passport.session())
 
 app.get('/', (req, res) => {
   res.send('<h1>Startseite</h1><a href="/login">Login</a>')
+})
+
+app.get('/hbs', (req, res) => {
+  res.render('index', { title: 'Express' })
 })
 
 // NUR ZUM TESTEN

@@ -50,7 +50,7 @@ router.post(
 
 router.get('/profil', (req, res) => {
   if (req.isAuthenticated()) {
-    res.send('<h1>Dein Profil</h1><a href="/logout">Logout</a>')
+    res.render('profil', { benutzername: req.user[0].benutzername })
   } else {
     res.redirect('/login')
   }

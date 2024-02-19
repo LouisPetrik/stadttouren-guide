@@ -16,6 +16,12 @@ const getBenutzer = async (db) => {
   return res.rows
 }
 
+// Wird genutzt um beim Authentifizieren den Benutzer zu holen
+const getBenutzerById = async (db, id) => {
+  const res = await db.query('SELECT * FROM benutzer WHERE id = $1', [id])
+  return res.rows
+}
+
 // Dafür, wenn der Nutzer seinen account schließen will
 const benutzerLoeschen = async (db, benutzername) => {
   const res = await db.query('DELETE FROM benutzer WHERE benutzername = $1', [
@@ -68,6 +74,7 @@ const benutzerExistiert = async (db, benutzername, email) => {
 module.exports = {
   benutzerAnlegen,
   getBenutzer,
+  getBenutzerById,
   benutzerLoeschen,
   benutzerPruefen,
   passwortAendern,

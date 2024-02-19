@@ -6,12 +6,15 @@ const session = require('express-session')
 const { Pool } = require('pg')
 const { engine } = require('express-handlebars')
 
+// importieren der Routen
 const benutzerRoutes = require('./routes/benutzer')
+const tourenRoutes = require('./routes/touren')
 
 // importieren der Datenbank Funktionen
 const {
   benutzerAnlegen,
   getBenutzer,
+  getBenutzerById,
   benutzerLoeschen,
   benutzerPruefen,
   passwortAendern,
@@ -56,11 +59,6 @@ passport.use(
     async function (email, password, done) {
       const [benutzer] = await benutzerPruefen(db, email, password)
 
-      // Prüfen ob der nutzer in der DB existiert
-      //const [benutzer] = await benutzerPruefen(db, email, password)
-      // benutzer ist promise
-      console.log('Benutzer: ', benutzer)
-
       if (!benutzer) {
         return done(null, false, { message: 'Falsche E-Mail oder Passwort.' })
       }
@@ -75,10 +73,10 @@ passport.serializeUser(function (user, done) {
   done(null, user.id)
 })
 
+// Müsste hier noch done die user.id übergeben werden?
 passport.deserializeUser(async function (id, done) {
-  getBenutzer(db, id).then((benutzer) => {
-    done(null, benutzer)
-  })
+  const benutzer = await getBenutzerById(db, id)
+  done(null, benutzer)
 })
 
 // Middlewares
@@ -102,8 +100,9 @@ app.get('/benutzer-erstellen', (req, res) => {
   res.send('Benutzer erstellt')
 })
 
-app.get('/benutzer', (req, res) => {
-  getBenutzer(db).then((result) => res.json(result))
+app.get('/benutzer', async (req, res) => {
+  const benutzerListe = await getBenutzer(db)
+  res.json(benutzerListe)
 })
 
 app.get('/passwort-pruefen', (req, res) => {
@@ -114,6 +113,8 @@ app.get('/passwort-pruefen', (req, res) => {
 
 // routen unter routes/benutzer.js
 app.use(benutzerRoutes)
+// Tour routen - also
+app.use(tourenRoutes)
 
 // Start server
 app.listen(PORT, () => {

@@ -71,6 +71,13 @@ const benutzerExistiert = async (db, benutzername, email) => {
   return res.rows
 }
 
+// Ab hier DB operationen für Touren
+
+const getTouren = async (db) => {
+  const res = await db.query('SELECT * FROM touren')
+  return res.rows
+}
+
 // Exportieren der Funktionen
 module.exports = {
   benutzerAnlegen,
@@ -80,4 +87,5 @@ module.exports = {
   benutzerPruefen,
   passwortAendern,
   benutzerExistiert,
+  getTouren,
 }

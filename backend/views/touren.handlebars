@@ -1,2 +1,9 @@
 <h1>Verfügbare Touren</h1>
 
+<ul>
+    {{#each touren}}
+    <li>
+        <a href="/touren/{{this.name}}">{{this.name}}</a>
+    </li>
+    {{/each}}
+</ul>

@@ -1,14 +1,22 @@
 <h1>Hallo, {{benutzername}}</h1>
 </p><a href="/logout">Logout</a>
 
-
-<div x-data="{ formAnzeigen: false }">
-    <!-- Button, der beim Klicken den Zustand ändert und das Formular anzeigt -->
-    <button x-show="!formAnzeigen" @click="formAnzeigen = true">Account löschen</button>
-
-    <!-- Formular, das nur angezeigt wird, wenn showForm true ist -->
-    <form x-show="formAnzeigen" action="/account-loeschen" method="post">
-        <input type="text" name="passwort" placeholder="Passwort" />
-        <input type="submit" value="Account löschen" />
-    </form>
+<!-- Button und Zielcontainer für das Formular -->
+<div x-data="{ showForm: false }">
+    <button x-show="!showForm" @click="showForm = true">Account löschen</button>
+    
+        <!-- Formular, das an eine andere Stelle im DOM teleportiert wird -->
+    <template x-if="showForm">
+        <form x-teleport="#form-ziel" action="/account-loeschen" method="post">
+            <input type="text" name="benutzername" placeholder="Benutzername" />
+            <input type="submit" value="Account löschen" />
+            
+        </form>
+        
+    </template>
 </div>
+
+
+
+<div id="form-ziel"></div>
+

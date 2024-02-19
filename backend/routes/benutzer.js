@@ -91,7 +91,7 @@ router.post('/account-loeschen', async (req, res) => {
     return
   } else {
     await benutzerLoeschen(req.db, benutzername)
-    res.redirect('/login')
+    res.send('Auf Wiedersehen!')
   }
 
   //await benutzerLoeschen(req.db, benutzername)

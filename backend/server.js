@@ -48,8 +48,10 @@ passport.use(
     },
 
     async function (email, password, done) {
-      // Prüfen ob der nutzer in der DB existiert
       const [benutzer] = await benutzerPruefen(db, email, password)
+
+      // Prüfen ob der nutzer in der DB existiert
+      //const [benutzer] = await benutzerPruefen(db, email, password)
       // benutzer ist promise
       console.log('Benutzer: ', benutzer)
 

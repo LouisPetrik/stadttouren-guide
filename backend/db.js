@@ -1,4 +1,5 @@
 // const { db } = require('pg')
+const bcrypt = require('bcrypt')
 
 // nutzer in die datenbank schreiben
 const benutzerAnlegen = async (db, benutzername, passwort, email) => {
@@ -25,11 +26,25 @@ const benutzerLoeschen = async (db, benutzername) => {
 
 // Passwort prüfung bei der Anmeldung. Hasht das Passwort und vergleicht es mit dem in der Datenbank. Muss noch umgesetzt werden
 const benutzerPruefen = async (db, email, passwort) => {
-  const res = await db.query(
-    'SELECT * FROM benutzer WHERE email = $1 AND passwort = $2',
-    [email, passwort]
-  )
-  return res.rows
+  try {
+    const res = await db.query('SELECT * FROM benutzer WHERE email = $1', [
+      email,
+    ])
+    const pwHash = res.rows[0].passwort
+    console.log('Passwort-Hash: ', pwHash)
+
+    const result = await bcrypt.compare(passwort, pwHash)
+
+    if (result) {
+      console.log('Passwort ist korrekt')
+      return res.rows // Hier muss die Logik für die erfolgreiche Authentifizierung stehen
+    } else {
+      console.log('Passwort ist falsch')
+      // Hier könnte man einen Fehler werfen oder entsprechend reagieren
+    }
+  } catch (error) {
+    console.log('Error: ', error)
+  }
 }
 
 // Passwort ändern

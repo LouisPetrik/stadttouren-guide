@@ -9,7 +9,7 @@ const benutzerAnlegen = async (db, benutzername, passwort, email) => {
   return res.rows[0]
 }
 
-// write a function that returns all users from the database
+// TEST: Dafür da alle benutzer auszugeben
 const getBenutzer = async (db) => {
   const res = await db.query('SELECT * FROM benutzer')
   return res.rows
@@ -23,7 +23,7 @@ const benutzerLoeschen = async (db, benutzername) => {
   return res.rows
 }
 
-// Passwort prüfung bei der Anmeldung. Hasht das Passwort und vergleicht es mit dem in der Datenbank
+// Passwort prüfung bei der Anmeldung. Hasht das Passwort und vergleicht es mit dem in der Datenbank. Muss noch umgesetzt werden
 const benutzerPruefen = async (db, email, passwort) => {
   const res = await db.query(
     'SELECT * FROM benutzer WHERE email = $1 AND passwort = $2',
@@ -41,6 +41,14 @@ const passwortAendern = async (db, benutzername, passwort) => {
   return res.rows
 }
 
+const benutzerExistiert = async (db, benutzername, email) => {
+  const res = await db.query(
+    'SELECT * FROM benutzer WHERE benutzername = $1 OR email = $2',
+    [benutzername, email]
+  )
+  return res.rows
+}
+
 // Exportieren der Funktionen
 module.exports = {
   benutzerAnlegen,
@@ -48,4 +56,5 @@ module.exports = {
   benutzerLoeschen,
   benutzerPruefen,
   passwortAendern,
+  benutzerExistiert,
 }

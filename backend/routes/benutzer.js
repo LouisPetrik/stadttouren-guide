@@ -8,6 +8,7 @@ const {
   benutzerLoeschen,
   benutzerPruefen,
   passwortAendern,
+  benutzerExistiert,
 } = require('../db')
 
 const saltRounds = 10
@@ -21,8 +22,16 @@ router.get('/registrieren', (req, res) => {
 router.post('/registrieren', async (req, res) => {
   const { benutzername, email, password } = req.body
   const hash = await bcrypt.hash(password, saltRounds)
-  benutzerAnlegen(req.db, benutzername, hash, email)
-  res.redirect('/login')
+  // vorher überprüfen, ob der Benutzername oder die E-Mail schon existiert
+  const benutzer = await benutzerExistiert(req.db, benutzername, email)
+  if (benutzer.length > 0) {
+    // muss in zukunft noch verbessert werden
+    res.send('Benutzername oder E-Mail existiert bereits')
+    return
+  } else {
+    benutzerAnlegen(req.db, benutzername, hash, email)
+    res.redirect('/login')
+  }
 })
 
 router.get('/login', (req, res) => {

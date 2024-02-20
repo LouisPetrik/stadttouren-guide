@@ -7,6 +7,15 @@ const router = express.Router()
 router.get('/touren', async (req, res) => {
   const tourenListe = await getTouren(req.db)
   console.log('Tourenliste: ', tourenListe)
+
+  // jeweils den Usernamen an die Tour anhängen
+  /* 
+  tourenListe.forEach(async (tour) => {
+    const benutzer = await getBenutzerById(req.db, tour.benutzer_id)
+    console.log('Benutzer: ', benutzer)
+    tour.benutzername = benutzer.benutzername
+  })*/
+
   res.render('touren', { touren: tourenListe })
 })
 

@@ -74,7 +74,22 @@ const benutzerExistiert = async (db, benutzername, email) => {
 // Ab hier DB operationen für Touren
 
 const getTouren = async (db) => {
-  const res = await db.query('SELECT * FROM touren')
+  //const res = await db.query('SELECT * FROM touren')
+
+  /* 
+    SELECT 
+    t.name,
+    t.beschreibung,
+    b.benutzername
+FROM 
+    touren t
+INNER JOIN 
+    benutzer b ON t.benutzer_id = b.id;
+    */
+  const res = await db.query(
+    'SELECT t.name, t.beschreibung, b.benutzername FROM touren t INNER JOIN benutzer b ON t.benutzer_id = b.id'
+  )
+
   return res.rows
 }
 

@@ -78,6 +78,14 @@ const getTouren = async (db) => {
   return res.rows
 }
 
+const tourHinzufuegen = async (db, name, beschreibung, benutzer_id) => {
+  const res = await db.query(
+    'INSERT INTO touren (name, beschreibung, benutzer_id) VALUES ($1, $2, $3) RETURNING *',
+    [name, beschreibung, benutzer_id]
+  )
+  return res.rows[0]
+}
+
 // Exportieren der Funktionen
 module.exports = {
   benutzerAnlegen,
@@ -88,4 +96,5 @@ module.exports = {
   passwortAendern,
   benutzerExistiert,
   getTouren,
+  tourHinzufuegen,
 }

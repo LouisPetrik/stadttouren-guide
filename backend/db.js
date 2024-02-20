@@ -71,8 +71,7 @@ const benutzerExistiert = async (db, benutzername, email) => {
   return res.rows
 }
 
-// Ab hier DB operationen für Touren
-
+// Alle Touren mit Benutzernamen von dem Ersteller ausgeben
 const getTouren = async (db) => {
   //const res = await db.query('SELECT * FROM touren')
 
@@ -90,6 +89,16 @@ INNER JOIN
     'SELECT t.name, t.beschreibung, b.benutzername FROM touren t INNER JOIN benutzer b ON t.benutzer_id = b.id'
   )
 
+  return res.rows
+}
+
+// Nur Touren von einem bestimmten Benutzer ausgeben (basierend auf Benutzername)
+// Verwendung: profil, benutzer/<benutzername>
+const getTourenVonBenutzer = async (db, benutzername) => {
+  const res = await db.query(
+    'SELECT * FROM touren WHERE benutzer_id = (SELECT id FROM benutzer WHERE benutzername = $1)',
+    [benutzername]
+  )
   return res.rows
 }
 
@@ -111,5 +120,6 @@ module.exports = {
   passwortAendern,
   benutzerExistiert,
   getTouren,
+  getTourenVonBenutzer,
   tourHinzufuegen,
 }

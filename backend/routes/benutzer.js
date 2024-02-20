@@ -9,6 +9,7 @@ const {
   benutzerPruefen,
   passwortAendern,
   benutzerExistiert,
+  getTourenVonBenutzer,
 } = require('../db')
 
 const saltRounds = 10
@@ -69,6 +70,15 @@ router.get('/logout', (req, res, next) => {
       res.redirect('/')
     })
   })
+})
+
+// Eine Route für alle /benutzer/<benutzername> Anfragen
+router.get('/benutzer/:benutzername', async (req, res) => {
+  const benutzername = req.params.benutzername
+
+  //const benutzer = await getBenutzer(req.db, benutzername)
+  const touren = await getTourenVonBenutzer(req.db, benutzername)
+  res.render('benutzer', { benutzername: benutzername, touren: touren })
 })
 
 router.post('/account-loeschen', async (req, res) => {

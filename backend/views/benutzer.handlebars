@@ -1,0 +1,16 @@
+<!-- Seite für die Anzeige der Profile von anderen Nutzern. Nicht zu verwechseln mit profile.handlebars -->
+
+<h1>Profil von {{ benutzername }}</h1>
+
+<h2>Touren von {{ benutzername }}</h2>
+
+<ul>
+    {{#each touren}}
+    <li>
+        <a href="/touren/{{this.name}}">{{this.name}}</a>
+    </li>
+    {{/each}}
+</ul>
+
+
+

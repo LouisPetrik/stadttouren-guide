@@ -1,13 +1,23 @@
-<p>Eigene Tour erstellen</p>
-{{> tour-erstellen }}
 
 
-<h2>Verfügbare Touren</h2>
 
-<ul>
-    {{#each touren}}
-    <li>
-        <a href="/touren/{{this.name}}">{{this.name}}</a> von <a href="/benutzer/{{this.benutzername}}">{{this.benutzername}}</a>
-    </li>
-    {{/each}}
-</ul>
+    <div class="row">
+        <div class="col-md-6">
+            <p>Eigene Tour erstellen</p>
+            {{> tour-erstellen }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Verfügbare Touren</h2>
+            <ul class="list-group">
+                {{#each touren}}
+                <li class="list-group-item">
+                    <a href="/touren/{{this.name}}">{{this.name}}</a> von <a href="/benutzer/{{this.benutzername}}">{{this.benutzername}}</a>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+

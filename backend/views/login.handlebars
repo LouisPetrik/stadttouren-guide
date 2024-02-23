@@ -10,6 +10,8 @@
   <button type="submit" class="btn btn-primary">Log In</button>
 </form>
 
-{{#if messages.error}}
-  <div class="alert alert-danger">{{messages.error}}</div>
+
+{{#if messages}}
+  <p>Fehlermeldung: </p>
+  <div class="alert alert-danger">{{messages}}</div>
 {{/if}}

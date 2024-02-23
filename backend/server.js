@@ -44,7 +44,7 @@ app.use(
   session({
     secret: 'geheimnis', // Setze ein starkes Geheimnis für die Session
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
   })
 )
 
@@ -59,22 +59,22 @@ app.set('views', './views')
 
 // Dummy users array
 // const users = [{ id: 1, email: 'user@example.com', password: 'password' }]
-
 passport.use(
   new LocalStrategy(
     {
       usernameField: 'email',
       passwordField: 'password',
     },
-
-    async function (email, password, done) {
-      const [benutzer] = await benutzerPruefen(db, email, password)
-
-      if (!benutzer) {
-        return done(null, false, { message: 'Falsche E-Mail oder Passwort.' })
+    async (email, password, done) => {
+      try {
+        const benutzer = await benutzerPruefen(db, email, password)
+        return done(null, benutzer)
+      } catch (error) {
+        //req.flash('info', 'Falsches Passwort oder Benutzername')
+        // Nutzt die Fehlermeldung für die Rückmeldung an den Nutzer
+        return done(null, false, { message: 'Falsches Passwort oder E-Mail' })
+        // send flash message
       }
-
-      return done(null, benutzer)
     }
   )
 )

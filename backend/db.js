@@ -37,20 +37,23 @@ const benutzerPruefen = async (db, email, passwort) => {
     const res = await db.query('SELECT * FROM benutzer WHERE email = $1', [
       email,
     ])
+    if (res.rows.length === 0) {
+      throw new Error('Benutzer nicht gefunden')
+    }
+
     const pwHash = res.rows[0].passwort
     console.log('Passwort-Hash: ', pwHash)
 
     const result = await bcrypt.compare(passwort, pwHash)
-
     if (result) {
       console.log('Passwort ist korrekt')
-      return res.rows // Hier muss die Logik für die erfolgreiche Authentifizierung stehen
+      return res.rows[0] // Gibt den gefundenen Benutzer zurück
     } else {
-      console.log('Passwort ist falsch')
-      // Hier könnte man einen Fehler werfen oder entsprechend reagieren
+      throw new Error('Falsches Passwort')
     }
   } catch (error) {
     console.log('Error: ', error)
+    throw error // Wichtig: Weiterleiten des Fehlers an den Aufrufer
   }
 }
 

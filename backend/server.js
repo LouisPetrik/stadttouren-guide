@@ -97,7 +97,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.get('/', (req, res) => {
-  res.send('<h1>Startseite</h1><a href="/login">Login</a>')
+  res.render('index')
 })
 
 // NUR ZUM TESTEN

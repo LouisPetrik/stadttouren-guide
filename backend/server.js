@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const { Pool } = require('pg')
 const { engine } = require('express-handlebars')
+const flash = require('connect-flash')
 
 // importieren der Routen
 const benutzerRoutes = require('./routes/benutzer')
@@ -38,6 +39,16 @@ app.use((req, res, next) => {
   req.db = db
   next()
 })
+
+app.use(
+  session({
+    secret: 'geheimnis', // Setze ein starkes Geheimnis für die Session
+    resave: false,
+    saveUninitialized: false,
+  })
+)
+
+app.use(flash())
 
 // Handlebars als templating engine registieren
 app.engine('handlebars', engine())

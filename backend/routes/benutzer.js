@@ -34,7 +34,7 @@ router.post('/registrieren', async (req, res) => {
 })
 
 router.get('/login', (req, res) => {
-  res.render('login')
+  res.render('login', { messages: req.flash('error') })
 })
 
 router.post(
@@ -42,6 +42,7 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/profil',
     failureRedirect: '/login',
+    failureFlash: 'Falsche E-Mail oder Passwort.',
   })
 )
 

@@ -15,6 +15,21 @@ CREATE TABLE IF NOT EXISTS touren (
 	  REFERENCES benutzer(id)
 );
 
+/* Quasi eine später-geplante-Touren-Tabelle in der App als Liste */
+CREATE TABLE IF NOT EXISTS geplante_touren (
+    id SERIAL PRIMARY KEY,
+    benutzer_id INTEGER NOT NULL,
+    tour_id INTEGER NOT NULL, 
+    durchgefuehrt BOOLEAN DEFAULT FALSE, 
+    CONSTRAINT fk_benutzer_geplante_touren
+      FOREIGN KEY(benutzer_id) 
+      REFERENCES benutzer(id),
+    CONSTRAINT fk_touren_geplante_touren
+      FOREIGN KEY(tour_id) 
+      REFERENCES touren(id)
+);
+
+
 /* Demo-Daten für Touren*/
 INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (4, 'Hildesheimer Rose', 'Tour 1 Beschreibung');
 INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (6, 'Historische Altstadt', 'Tour 2 Beschreibung');

@@ -15,9 +15,7 @@ const {
 const saltRounds = 10
 
 router.get('/registrieren', (req, res) => {
-  res.send(
-    '<form action="/registrieren" method="post"><div><label>Benutzername:</label><input type="text" name="benutzername"/><br/></div><div><label>Email:</label><input type="text" name="email"/><br/></div><div><label>Password:</label><input type="password" name="password"/></div><div><input type="submit" value="Register"/></div></form>'
-  )
+  res.render('registrieren')
 })
 
 router.post('/registrieren', async (req, res) => {
@@ -36,9 +34,7 @@ router.post('/registrieren', async (req, res) => {
 })
 
 router.get('/login', (req, res) => {
-  res.send(
-    '<form action="/login" method="post"><div><label>Email:</label><input type="text" name="email"/><br/></div><div><label>Password:</label><input type="password" name="password"/></div><div><input type="submit" value="Log In"/></div></form>'
-  )
+  res.render('login')
 })
 
 router.post(
@@ -81,6 +77,7 @@ router.get('/benutzer/:benutzername', async (req, res) => {
   res.render('benutzer', { benutzername: benutzername, touren: touren })
 })
 
+// Genutzt in: profil.handlebars
 router.post('/account-loeschen', async (req, res) => {
   // Benutzername aus der Session holen
   const benutzername = req.user[0].benutzername

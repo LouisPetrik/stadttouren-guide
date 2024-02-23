@@ -89,27 +89,11 @@ app.get('/', (req, res) => {
   res.send('<h1>Startseite</h1><a href="/login">Login</a>')
 })
 
-app.get('/hbs', (req, res) => {
-  res.render('index', { title: 'Express' })
-})
-
 // NUR ZUM TESTEN
-
-app.get('/benutzer-erstellen', (req, res) => {
-  benutzerAnlegen(db, 'test', 'test', 'test@web.de')
-  res.send('Benutzer erstellt')
-})
-
 app.get('/benutzer', async (req, res) => {
   const benutzerListe = await getBenutzer(db)
   res.json(benutzerListe)
 })
-
-app.get('/passwort-pruefen', (req, res) => {
-  benutzerPruefen(db, 'testnutzer', '123456').then((result) => res.json(result))
-})
-
-// NUR ZUM TESTEN ENDE
 
 // routen unter routes/benutzer.js
 app.use(benutzerRoutes)

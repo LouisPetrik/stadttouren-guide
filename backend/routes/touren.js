@@ -34,4 +34,12 @@ router.post('/tour-erstellen', async (req, res) => {
   res.redirect('/touren')
 })
 
+router.get('/tour/:id', async (req, res) => {
+  const id = req.params.id
+  console.log('ID ist: ', id)
+  res.render('tour', {
+    layout: false,
+  })
+})
+
 module.exports = router

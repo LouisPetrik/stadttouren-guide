@@ -96,6 +96,9 @@ app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 app.use(passport.initialize())
 app.use(passport.session())
 
+// Static files on route /public
+app.use('/public', express.static('public'))
+
 app.get('/', (req, res) => {
   res.render('index')
 })

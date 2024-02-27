@@ -21,13 +21,15 @@ const {
   passwortAendern,
 } = require('./db')
 
+console.log('server')
+
 const app = express()
 const PORT = 3000
 
 // Anlegen der Verbindung
 const db = new Pool({
   user: 'meinBenutzer',
-  host: 'localhost',
+  host: 'db', // ist der Name des Services in docker-compose.yml
   database: 'meineDatenbank',
   password: 'meinPasswort',
   port: 5432,

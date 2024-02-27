@@ -15,16 +15,13 @@ router.get('/touren', async (req, res) => {
 router.post('/tour-erstellen', async (req, res) => {
   const { name, beschreibung } = req.body
 
-  // Als URL-Path den Namen der Tour verwenden, aber alles klein und Leerzeichen durch Bindestriche ersetzt
-  const urlpath = name.toLowerCase().replace(/ /g, '-')
-
   // ID des Users:
   const benutzer_id = req.user[0].id
 
   // Wie kann ich die ID des Users herausfinden?
 
   console.log('Tour erstellt von', benutzer_id)
-  await tourHinzufuegen(req.db, name, urlpath, beschreibung, benutzer_id)
+  await tourHinzufuegen(req.db, name, beschreibung, benutzer_id)
 
   res.redirect('/touren')
 })
@@ -32,6 +29,9 @@ router.post('/tour-erstellen', async (req, res) => {
 router.get('/tour/:id', async (req, res) => {
   /* hier koennen dann die notwendigen informationen fuer die tour geholt werden */
   const id = req.params.id
+
+  // Wichtige Daten der Tour laden
+  // const tour = await getTour(req.db, id)
 
   console.log('ID ist: ', id)
   res.render('tour', {

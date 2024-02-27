@@ -17,7 +17,6 @@ CREATE TABLE touren (
     id SERIAL PRIMARY KEY,
     benutzer_id INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
-    urlpath VARCHAR(255) UNIQUE NOT NULl, 
     beschreibung TEXT,
     CONSTRAINT fk_benutzer
       FOREIGN KEY(benutzer_id) 
@@ -50,8 +49,8 @@ INSERT INTO benutzer (benutzername, passwort, email) VALUES
 
 
 /* Demo-Daten für Touren*/
-INSERT INTO touren (benutzer_id, name, urlpath, beschreibung) VALUES (2, 'Hildesheimer Rose', 'hildesheimer-rose', 'Eine Tour entlang der Wege, die die Hildesheimer Rose beschreibt');
-INSERT INTO touren (benutzer_id, name, urlpath, beschreibung) VALUES (4, 'Historische Altstadt', 'historische-altstadt', 'Erkunde die historische Altstadt Hildesheims, rund um den Marktplatz');
-INSERT INTO touren (benutzer_id, name, urlpath, beschreibung) VALUES (5, 'Neustadt', 'neustadt', 'Rund um die Lamberti-Kirche erstreckt sich die Neustadt');
-INSERT INTO touren (benutzer_id, name, urlpath, beschreibung) VALUES (6, 'Weltkulturerbe', 'weltkulturerbe', 'Hildesheim hat nicht nur ein Weltkulturerbe, sondern gleich zwei! Eine Tour zur St. Michaelis und zum Dom');
-INSERT INTO touren (benutzer_id, name, urlpath, beschreibung) VALUES (2, 'Kneipentour', 'kneipentour', 'Eine Tour durch die Kneipen Hildesheims');
+INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (2, 'Hildesheimer Rose', 'Eine Tour entlang der Wege, die die Hildesheimer Rose beschreibt');
+INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (4, 'Historische Altstadt', 'Erkunde die historische Altstadt Hildesheims, rund um den Marktplatz');
+INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (5, 'Neustadt', 'Rund um die Lamberti-Kirche erstreckt sich die Neustadt');
+INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (6, 'Weltkulturerbe', 'Hildesheim hat nicht nur ein Weltkulturerbe, sondern gleich zwei! Eine Tour zur St. Michaelis und zum Dom');
+INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (2, 'Kneipentour', 'Eine Tour durch die Kneipen Hildesheims');

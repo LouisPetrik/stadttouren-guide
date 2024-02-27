@@ -89,7 +89,7 @@ INNER JOIN
     benutzer b ON t.benutzer_id = b.id;
     */
   const res = await db.query(
-    'SELECT t.name, t.urlpath, t.beschreibung, b.benutzername FROM touren t INNER JOIN benutzer b ON t.benutzer_id = b.id'
+    'SELECT t.id, t.name, t.beschreibung, b.benutzername FROM touren t INNER JOIN benutzer b ON t.benutzer_id = b.id'
   )
 
   return res.rows
@@ -105,16 +105,10 @@ const getTourenVonBenutzer = async (db, benutzername) => {
   return res.rows
 }
 
-const tourHinzufuegen = async (
-  db,
-  name,
-  urlpath,
-  beschreibung,
-  benutzer_id
-) => {
+const tourHinzufuegen = async (db, name, beschreibung, benutzer_id) => {
   const res = await db.query(
-    'INSERT INTO touren (name, urlpath, beschreibung, benutzer_id) VALUES ($1, $2, $3, $4) RETURNING *',
-    [name, urlpath, beschreibung, benutzer_id]
+    'INSERT INTO touren (name, beschreibung, benutzer_id) VALUES ($1, $2, $3, $4) RETURNING *',
+    [name, beschreibung, benutzer_id]
   )
   return res.rows[0]
 }

@@ -8,14 +8,6 @@ router.get('/touren', async (req, res) => {
   const tourenListe = await getTouren(req.db)
   console.log('Tourenliste: ', tourenListe)
 
-  // jeweils den Usernamen an die Tour anhängen
-  /* 
-  tourenListe.forEach(async (tour) => {
-    const benutzer = await getBenutzerById(req.db, tour.benutzer_id)
-    console.log('Benutzer: ', benutzer)
-    tour.benutzername = benutzer.benutzername
-  })*/
-
   res.render('touren', { touren: tourenListe })
 })
 
@@ -34,8 +26,21 @@ router.post('/tour-erstellen', async (req, res) => {
   res.redirect('/touren')
 })
 
+router.get('/tour', (req, res) => {
+  res.render('nicht-gefunden', {
+    layout: false,
+    objekt: 'Tour',
+    fallback: {
+      text: 'Zurück zur Tourenübersicht',
+      link: '/touren',
+    },
+  })
+})
+
 router.get('/tour/:id', async (req, res) => {
+  /* hier koennen dann die notwendigen informationen fuer die tour geholt werden */
   const id = req.params.id
+
   console.log('ID ist: ', id)
   res.render('tour', {
     layout: false,

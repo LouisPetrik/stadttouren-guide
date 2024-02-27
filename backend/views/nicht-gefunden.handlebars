@@ -1,0 +1,8 @@
+{{! Anzeigen bei nicht-gefunden fehlern für: Touren, Benutzer }}
+
+<h1>{{objekt}} nicht gefunden</h1>
+
+{{! Wenn fallback übergeben wird, link rendern}}
+{{#if fallback}}
+  <a href="{{fallback.link}}">{{fallback.text}}</a>
+{{/if}}

@@ -34,6 +34,12 @@ router.post('/registrieren', async (req, res) => {
 })
 
 router.get('/login', (req, res) => {
+  // wenn nutzer bereits eingeloggt ist, dann auf profil weiterleiten
+  if (req.isAuthenticated()) {
+    res.redirect('/profil')
+    return
+  }
+
   res.render('login', { messages: req.flash('error'), time: Date.now() })
 })
 
@@ -46,9 +52,15 @@ router.post(
   })
 )
 
-router.get('/profil', (req, res) => {
+router.get('/profil', async (req, res) => {
   if (req.isAuthenticated()) {
-    res.render('profil', { benutzername: req.user[0].benutzername })
+    // benutzername aus der Session holen
+    const benutzername = req.user[0].benutzername
+
+    // eigene Touren anzeigen
+    const touren = await getTourenVonBenutzer(req.db, benutzername)
+
+    res.render('profil', { benutzername: benutzername, touren: touren })
   } else {
     res.redirect('/login')
   }

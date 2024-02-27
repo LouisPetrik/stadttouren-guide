@@ -15,6 +15,10 @@
                 {{#each touren}}
                 <li class="list-group-item">
                     <a href="/touren/{{this.name}}">{{this.name}}</a> von <a href="/benutzer/{{this.benutzername}}">{{this.benutzername}}</a>
+                    <br/>
+                    <span>{{this.beschreibung}}</span>
+                    <button class="btn btn-primary">Starten</button>
+                    <button class="btn btn-info">Merken</button>
                 </li>
                 {{/each}}
             </ul>

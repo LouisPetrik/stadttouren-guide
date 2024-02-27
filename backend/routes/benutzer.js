@@ -25,7 +25,7 @@ router.post('/registrieren', async (req, res) => {
   const benutzer = await benutzerExistiert(req.db, benutzername, email)
   if (benutzer.length > 0) {
     // muss in zukunft noch verbessert werden
-    res.send('Benutzername oder E-Mail existiert bereits')
+    res.render('existiert-bereits')
     return
   } else {
     benutzerAnlegen(req.db, benutzername, hash, email)

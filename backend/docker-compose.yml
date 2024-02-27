@@ -4,8 +4,8 @@ services:
   db:
     image: postgres:latest
     volumes:
-      - postgres-data:/var/lib/postgresql/data
       - ./db/dataset:/docker-entrypoint-initdb.d
+      # vorher noch: - postgres-data:/var/lib/postgresql/data vorab für persistente Daten 
     environment:
       POSTGRES_DB: meineDatenbank
       POSTGRES_USER: meinBenutzer

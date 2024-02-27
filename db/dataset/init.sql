@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS geplante_touren (
 
 
 /* Demo-Daten für Touren*/
-INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (4, 'Hildesheimer Rose', 'Eine Tour entlang der Wege, die die Hildesheimer Rose beschreibt');
+INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (4, 'Hildesheimer Rose', 'Eine Tour entlang der Wege, die die Hildesheimer Rose beschreibt (neuer container)');
 INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (6, 'Historische Altstadt', 'Erkunde die historische Altstadt Hildesheims, rund um den Marktplatz');
 INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (4, 'Neustadt', 'Rund um die Lamberti-Kirche erstreckt sich die Neustadt');
 INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (6, 'Weltkulturerbe', 'Hildesheim hat nicht nur ein Weltkulturerbe, sondern gleich zwei! Eine Tour zur St. Michaelis und zum Dom');

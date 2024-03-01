@@ -35,13 +35,16 @@ const db = new Pool({
   port: 5432,
 })
 
-// Anlegen einer Middleware, um die DB Verbindung an die Requests zu übergeben
-// so muss nicht in jeder Route die DB Verbindung neu hergestellt werden
+/**
+ * Anlegen einer Middleware, um die DB Verbindung an die Requests zu übergeben.
+ * So muss nicht in jeder Route die DB Verbindung neu hergestellt werden.
+ */
 app.use((req, res, next) => {
   req.db = db
   next()
 })
 
+/** Midldeware für die Session */
 app.use(
   session({
     secret: 'geheimnis', // Setze ein starkes Geheimnis für die Session
@@ -101,11 +104,15 @@ app.use(passport.session())
 // Static files on route /public
 app.use('/public', express.static('public'))
 
+/**
+ * @param {object} req - Request
+ * @param {object} res - Response
+ */
 app.get('/', (req, res) => {
   res.render('index')
 })
 
-// NUR ZUM TESTEN
+/** Nur zum Testen */
 app.get('/benutzer', async (req, res) => {
   const benutzerListe = await getBenutzer(db)
   res.json(benutzerListe)

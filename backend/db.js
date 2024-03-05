@@ -22,8 +22,12 @@ const getBenutzerById = async (db, id) => {
   return res.rows
 }
 
-// Dafür, wenn der Nutzer seinen account schließen will
-// Sollte vielleicht auf email umgestellt werden
+/**
+ * Falls Benutzer Account schließen moechte
+ * @param {*} db Datenbankverbindung
+ * @param {*} benutzername Selbstgewählter Benutzername
+ * @returns {Promise} - ausstehend
+ */
 const benutzerLoeschen = async (db, benutzername) => {
   const res = await db.query('DELETE FROM benutzer WHERE benutzername = $1', [
     benutzername,
@@ -32,6 +36,14 @@ const benutzerLoeschen = async (db, benutzername) => {
 }
 
 // Passwort prüfung bei der Anmeldung. Hasht das Passwort und vergleicht es mit dem in der Datenbank. Muss noch umgesetzt werden
+
+/**
+ * Überprüft Passworteingabe bei der Anmeldung
+ * @param {*} db Datenbankverbindung
+ * @param {*} email Email-Adresse
+ * @param {*} passwort im Form eingegebenes Passwort
+ * @returns {Promise} - Gibt den erfolgreich angemeldeten Benutzer zurück
+ */
 const benutzerPruefen = async (db, email, passwort) => {
   try {
     const res = await db.query('SELECT * FROM benutzer WHERE email = $1', [
@@ -57,7 +69,13 @@ const benutzerPruefen = async (db, email, passwort) => {
   }
 }
 
-// Passwort ändern
+/**
+ * Falls Nutzer sein Passwort ändernt moechte
+ * @param {*} db Datenbankverbindung
+ * @param {*} benutzername Selbstgewählter Benutzername
+ * @param {*} passwort Neues Passwort
+ * @returns {Promise} - ausstehend
+ */
 const passwortAendern = async (db, benutzername, passwort) => {
   const res = await db.query(
     'UPDATE benutzer SET passwort = $1 WHERE benutzername= $2',
@@ -68,9 +86,9 @@ const passwortAendern = async (db, benutzername, passwort) => {
 
 /**
  * Prüfen, ob der Benutzer existiert
- * @param {*} db
- * @param {*} benutzername
- * @param {*} email
+ * @param {*} db Datenbankverbindung
+ * @param {*} benutzername Selbstgewählter Benutzername
+ * @param {*} email Hinterlegte Email-Adresse
  * @returns {Promise} - Gibt die gefundenen Benutzer zurück
  */
 const benutzerExistiert = async (db, benutzername, email) => {

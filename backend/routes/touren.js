@@ -39,6 +39,13 @@ router.get('/tour/:id', async (req, res) => {
   })
 })
 
+// nur zum Testen und bearbeiten der Routen Seite
+router.get('/tour-bearbeiten', (req, res) => {
+  res.render('tour', {
+    layout: false,
+  })
+})
+
 // Soll abfangen wenn Nutzer nicht-existierende Tour aufruft
 router.get('/tour', (req, res) => {
   res.render('nicht-gefunden', {

@@ -60,6 +60,15 @@
       }
     }
 
+    // Wenn die aktuele domain im Browser nicht localhost ist, muss die URL angepasst werden
+    function getServiceURL() {
+      if (window.location.hostname === 'localhost') {
+        return 'http://localhost:5000/route/v1'
+      } else {
+        return 'http://stadttouren.online:5000/'
+      }
+    }
+
     // Routing-Control-Initialisierung mit Start- und Endpunkt
     var routingControl = L.Routing.control({
       waypoints: [
@@ -84,12 +93,14 @@
       },
 
       router: new L.Routing.osrmv1({
-        serviceUrl: 'http://localhost:5000/route/v1',
+
+        serviceUrl: getServiceURL(),
+        // später, um requests über Express abzuwickeln: serviceUrl: '/osrm-backend',
         profile: 'foot',
       }),
     }).addTo(map)
 
-
+    // Dient wohl erstmal als Platzhalter 
     const GPSmarker = L.marker([51.505, -0.09]).addTo(map);
 
     positionAbfragen();

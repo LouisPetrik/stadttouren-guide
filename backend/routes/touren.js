@@ -1,4 +1,5 @@
 const express = require('express')
+const axios = require('axios')
 
 const { getTouren, tourHinzufuegen } = require('../db')
 const router = express.Router()
@@ -37,6 +38,39 @@ router.get('/tour/:id', async (req, res) => {
   res.render('tour', {
     layout: false,
   })
+})
+
+// vielleicht für später, um requests an OSRM über Express abzuwickeln
+
+const proxyUrl = 'http://locahost:5000'
+
+router.get('/osrm-backend/foot/:coords', async (req, res) => {
+  // Extract coordinates from the request URL
+  const coords = req.params.coords.split(';')
+  const origin = coords[0]
+  const destination = coords[1]
+
+  // Build the query parameters based on the original request
+  const queryParams = new URLSearchParams({
+    overview: req.query.overview,
+    alternatives: req.query.alternatives,
+    steps: req.query.steps,
+    hints: req.query.hints,
+  })
+
+  // Construct the proxied request URL
+  const proxiedUrl = `${proxyUrl}/foot/${origin};${destination}?${queryParams}`
+
+  try {
+    // Forward the request to the other server using Axios
+    const response = await axios.get(proxiedUrl)
+
+    // Send the response back to the frontend app
+    res.send(response.data)
+  } catch (error) {
+    console.error('Error forwarding request:', error)
+    res.status(500).send('Error forwarding request')
+  }
 })
 
 // nur zum Testen und bearbeiten der Routen Seite

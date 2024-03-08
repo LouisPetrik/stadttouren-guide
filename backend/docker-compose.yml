@@ -5,7 +5,7 @@ services:
     image: postgres:latest
     volumes:
       - ./db/dataset:/docker-entrypoint-initdb.d
-      # vorher noch: - postgres-data:/var/lib/postgresql/data vorab für persistente Daten 
+      # Optional: - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: meineDatenbank
       POSTGRES_USER: meinBenutzer
@@ -28,6 +28,7 @@ services:
     depends_on:
       - db
 
+
   caddy:
     image: caddy:2
     ports:
@@ -40,7 +41,20 @@ services:
     depends_on:
       - app
 
+  osrm:
+    image: osrm/osrm-backend
+    volumes:
+      - ./data:/data
+    ports:
+      - '5000:5000'
+    command: /bin/bash -c "\
+      osrm-routed --algorithm mld /data/niedersachsen-latest.osrm"
+    depends_on:
+      - app
+
+
+
 volumes:
-  postgres-data:
+  #postgres-data:
   caddy_data:
   caddy_config:

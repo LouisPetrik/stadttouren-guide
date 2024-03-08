@@ -8,6 +8,7 @@ services:
       - "5000:5000"
     command: /bin/bash -c "\
       osrm-routed --algorithm mld /data/niedersachsen-latest.osrm"
+    container_name: osrm-server
 
 
       

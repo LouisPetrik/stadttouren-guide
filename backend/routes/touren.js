@@ -42,7 +42,7 @@ router.get('/tour/:id', async (req, res) => {
 
 // Um OSRM Anfragen weiterzuleiten
 
-const OSRMserver = 'http://127.0.0.1:5000/route/v1'
+const OSRMserver = 'http://osrm:5000/route/v1'
 
 router.get('/osrm-backend/*', (req, res) => {
   // cut out the /osrm-backend part of the URL
@@ -53,12 +53,13 @@ router.get('/osrm-backend/*', (req, res) => {
   //proxy.web(req, res)
 
   // Construct the proxied request URL
+  //const proxiedUrl = `${OSRMserver}${req.url}`
   const proxiedUrl = `${OSRMserver}${req.url}`
   console.log('proxiedUrl: ', proxiedUrl)
 
   // run wget locally to get the data from OSRM
 
-  exec(`wget -O - ${proxiedUrl}`, (error, stdout, stderr) => {
+  exec(`curl -L ${proxiedUrl}`, (error, stdout, stderr) => {
     if (error) {
       console.error(`exec error: ${error}`)
       return

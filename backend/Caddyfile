@@ -1,4 +1,7 @@
 stadttouren.online {
+  # Versuch, den OSRM Server über domain/path verfügbar zu machen
+  reverse_proxy /osrm* osrm:5000
+
   reverse_proxy app:3000
 }
 

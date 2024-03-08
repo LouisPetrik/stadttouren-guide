@@ -97,9 +97,9 @@
       },
 
       router: new L.Routing.osrmv1({
+        // URL des OSRM-Services, je nachdem ob die Anwendung lokal oder auf Domain läuft 
         serviceUrl: getServiceURL(),
-
-        // später, um requests über Express abzuwickeln: serviceUrl: '/osrm-backend',
+        // Zu Fuß als Fortbewegungsmittel
         profile: 'foot',
       }),
     }).addTo(map)

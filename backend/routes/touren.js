@@ -42,66 +42,7 @@ router.get('/tour/:id', async (req, res) => {
 
 // Um OSRM Anfragen weiterzuleiten
 
-const OSRMserver = 'http://osrm:5000/route/v1'
-
-router.get('/osrm-backend/*', (req, res) => {
-  // cut out the /osrm-backend part of the URL
-  req.url = req.url.replace('/osrm-backend', '')
-
-  console.log('request an OSRM: ', req.url)
-
-  //proxy.web(req, res)
-
-  // Construct the proxied request URL
-  //const proxiedUrl = `${OSRMserver}${req.url}`
-  const proxiedUrl = `${OSRMserver}${req.url}`
-  console.log('proxiedUrl: ', proxiedUrl)
-
-  // run wget locally to get the data from OSRM
-
-  exec(`curl -L ${proxiedUrl}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`)
-      return
-    }
-    console.log(`stdout: ${stdout}`)
-    console.error(`stderr: ${stderr}`)
-    res.send(stdout)
-  })
-})
-
 // vielleicht für später, um requests an OSRM über Express abzuwickeln
-/*
-const proxyUrl = 'http://locahost:5000'
-
-router.get('/osrm-backend/foot/:coords', async (req, res) => {
-  // Extract coordinates from the request URL
-  const coords = req.params.coords.split(';')
-  const origin = coords[0]
-  const destination = coords[1]
-
-  // Build the query parameters based on the original request
-  const queryParams = new URLSearchParams({
-    overview: req.query.overview,
-    alternatives: req.query.alternatives,
-    steps: req.query.steps,
-    hints: req.query.hints,
-  })
-
-  // Construct the proxied request URL
-  const proxiedUrl = `${proxyUrl}/foot/${origin};${destination}?${queryParams}`
-
-  try {
-    // Forward the request to the other server using Axios
-    const response = await axios.get(proxiedUrl)
-
-    // Send the response back to the frontend app
-    res.send(response.data)
-  } catch (error) {
-    console.error('Error forwarding request:', error)
-    res.status(500).send('Error forwarding request')
-  }
-})*/
 
 // nur zum Testen und bearbeiten der Routen Seite
 router.get('/tour-bearbeiten', (req, res) => {

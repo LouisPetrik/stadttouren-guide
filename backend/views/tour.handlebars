@@ -62,13 +62,14 @@
 
     /**
       * Gibt die URL des OSRM-Services zurück, abhängig davon, ob die Anwendung lokal oder auf Domain läuft
-      * @returns {string} URL des OSRM-Services
+      * @returns {string} URL des OSRM-Services 
+      * Caddy leitet alles auf /route an OSRM weiter. Lokal über port 80, sonst über 443 da https dann aktiv. 
       */
     function getServiceURL() {
       if (window.location.hostname === 'localhost') {
-        return 'http://localhost:5000/route/v1'
+        return 'http://localhost/route/v1'
       } else {
-        return 'http://stadttouren.online:5000/'
+        return 'https://stadttouren.online/route/v1'
       }
     }
 
@@ -96,8 +97,8 @@
       },
 
       router: new L.Routing.osrmv1({
+        serviceUrl: getServiceURL(),
 
-        serviceUrl: "/osrm-backend",
         // später, um requests über Express abzuwickeln: serviceUrl: '/osrm-backend',
         profile: 'foot',
       }),

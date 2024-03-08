@@ -1,5 +1,5 @@
 const express = require('express')
-const axios = require('axios')
+const { exec } = require('child_process')
 
 const { getTouren, tourHinzufuegen } = require('../db')
 const router = express.Router()
@@ -40,8 +40,37 @@ router.get('/tour/:id', async (req, res) => {
   })
 })
 
-// vielleicht für später, um requests an OSRM über Express abzuwickeln
+// Um OSRM Anfragen weiterzuleiten
 
+const OSRMserver = 'http://127.0.0.1:5000/route/v1'
+
+router.get('/osrm-backend/*', (req, res) => {
+  // cut out the /osrm-backend part of the URL
+  req.url = req.url.replace('/osrm-backend', '')
+
+  console.log('request an OSRM: ', req.url)
+
+  //proxy.web(req, res)
+
+  // Construct the proxied request URL
+  const proxiedUrl = `${OSRMserver}${req.url}`
+  console.log('proxiedUrl: ', proxiedUrl)
+
+  // run wget locally to get the data from OSRM
+
+  exec(`wget -O - ${proxiedUrl}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`)
+      return
+    }
+    console.log(`stdout: ${stdout}`)
+    console.error(`stderr: ${stderr}`)
+    res.send(stdout)
+  })
+})
+
+// vielleicht für später, um requests an OSRM über Express abzuwickeln
+/*
 const proxyUrl = 'http://locahost:5000'
 
 router.get('/osrm-backend/foot/:coords', async (req, res) => {
@@ -71,7 +100,7 @@ router.get('/osrm-backend/foot/:coords', async (req, res) => {
     console.error('Error forwarding request:', error)
     res.status(500).send('Error forwarding request')
   }
-})
+})*/
 
 // nur zum Testen und bearbeiten der Routen Seite
 router.get('/tour-bearbeiten', (req, res) => {

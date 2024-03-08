@@ -60,7 +60,10 @@
       }
     }
 
-    // Wenn die aktuele domain im Browser nicht localhost ist, muss die URL angepasst werden
+    /**
+      * Gibt die URL des OSRM-Services zurück, abhängig davon, ob die Anwendung lokal oder auf Domain läuft
+      * @returns {string} URL des OSRM-Services
+      */
     function getServiceURL() {
       if (window.location.hostname === 'localhost') {
         return 'http://localhost:5000/route/v1'
@@ -94,7 +97,7 @@
 
       router: new L.Routing.osrmv1({
 
-        serviceUrl: getServiceURL(),
+        serviceUrl: "/osrm-backend",
         // später, um requests über Express abzuwickeln: serviceUrl: '/osrm-backend',
         profile: 'foot',
       }),

@@ -97,6 +97,9 @@ passport.deserializeUser(async function (id, done) {
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: false }))
+// EBenfalls notwendig, um auch JSON Daten zu parsen:
+app.use(bodyParser.json())
+
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 app.use(passport.initialize())
 app.use(passport.session())

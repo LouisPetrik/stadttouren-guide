@@ -5,20 +5,19 @@
  * @param {*} punkte Array von GPS Koordinaten
  */
 function tourUpdaten(tourID, punkte) {
-  fetch(`/api/touren/${tourId}`, {
-    method: 'PUT',
+  // POST request zum Server
+  fetch('/tour-bearbeiten/' + tourID, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(updatedData),
+    body: JSON.stringify({ punkte }),
   })
-    .then((response) => response.json())
+    .then((res) => res.json())
     .then((data) => {
-      console.log('Erfolgreich geupdated:', data)
-      // Hier kannst du weitere Aktionen durchführen, z.B. eine Erfolgsmeldung anzeigen
+      console.log('Erfolgreich:', data)
     })
     .catch((error) => {
-      console.error('Fehler beim Updaten der Tour:', error)
-      // Hier kannst du Fehlerbehandlung durchführen
+      console.error('Error:', error)
     })
 }

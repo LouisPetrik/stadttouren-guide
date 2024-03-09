@@ -32,6 +32,20 @@ router.post('/tour-erstellen', async (req, res) => {
   res.redirect('/touren')
 })
 
+// POST Handler zum Bearbeiten einer Tour, zugehörig zu /tour-bearbeiten (siehe unten)
+router.post('/tour-bearbeiten/:id', async (req, res) => {
+  if (req.isAuthenticated()) {
+    const tourId = parseInt(req.params.id)
+
+    console.log('Nutzer moechte Tour bearbeiten: ', tourId)
+
+    // inhalt des body
+    console.log('Inhalt des Body: ', req.body.punkte)
+  } else {
+    res.send('Keine Berechtigung zum Bearbeiten einer Tour via POST-Request')
+  }
+})
+
 router.get('/tour/:id', async (req, res) => {
   /* hier koennen dann die notwendigen informationen fuer die tour geholt werden */
   const id = req.params.id

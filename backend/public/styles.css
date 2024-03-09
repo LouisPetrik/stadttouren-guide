@@ -8,3 +8,9 @@
   text-align: center;
   padding: 10px 0;
 }
+
+/* Für alle Links, die in Buttons liegen */
+.btn-link {
+  color: black;
+  text-decoration: none;
+}

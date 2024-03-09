@@ -35,15 +35,15 @@
   <div class="col">
     <h2>Meine Touren</h2>
     {{#if touren}}
-      <ul class="list-group">
-        {{#each touren}}
-        <li class="list-group-item">
-          <a href="/touren/{{this.name}}">{{this.name}}</a>
-        </li>
-        {{/each}}
-      </ul>
+    <ul class="list-group">
+      {{#each touren}}
+      <li class="list-group-item">
+        <a href="/touren/{{this.name}}">{{this.name}}</a>
+      </li>
+      {{/each}}
+    </ul>
     {{else}}
-      <p>Du hast noch keine Touren erstellt.</p>
+    <p>Du hast noch keine Touren erstellt.</p>
     {{/if}}
   </div>
 </div>

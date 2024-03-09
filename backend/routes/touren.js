@@ -43,7 +43,7 @@ router.get('/tour/:id', async (req, res) => {
 // Um OSRM Anfragen weiterzuleiten
 
 // vielleicht für später, um requests an OSRM über Express abzuwickeln
-
+// Leitet auf tour-bearbeiten mittlerweeile weiter.
 // nur zum Testen und bearbeiten der Routen Seite
 router.get('/tour-bearbeiten', (req, res) => {
   res.render('tour', {

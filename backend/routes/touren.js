@@ -1,7 +1,12 @@
 const express = require('express')
 const { exec } = require('child_process')
 
-const { getTouren, tourHinzufuegen } = require('../db')
+const {
+  getTouren,
+  tourHinzufuegen,
+  getBenutzer,
+  getTourenVonBenutzer,
+} = require('../db')
 const router = express.Router()
 
 // Test: Komplette liste vno Touren
@@ -40,17 +45,6 @@ router.get('/tour/:id', async (req, res) => {
   })
 })
 
-// Um OSRM Anfragen weiterzuleiten
-
-// vielleicht für später, um requests an OSRM über Express abzuwickeln
-// Leitet auf tour-bearbeiten mittlerweeile weiter.
-// nur zum Testen und bearbeiten der Routen Seite
-router.get('/tour-bearbeiten', (req, res) => {
-  res.render('tour', {
-    layout: false,
-  })
-})
-
 // Soll abfangen wenn Nutzer nicht-existierende Tour aufruft
 router.get('/tour', (req, res) => {
   res.render('nicht-gefunden', {
@@ -61,6 +55,45 @@ router.get('/tour', (req, res) => {
       link: '/touren',
     },
   })
+})
+
+// Nutzer landet auf dieser Seite, wenn er eine Tour von sich bearbeiten möchte
+router.get('/tour-bearbeiten/:id', async (req, res) => {
+  const tourId = parseInt(req.params.id)
+  // zu integer parsen, da es aus der URL als String kommt
+
+  console.log('ID von zu bearbeitender Tour: ', tourId)
+
+  // Bearbeiten nur erlauben, wenn Nutzer eingeloggt ist
+  if (req.isAuthenticated()) {
+    const benutzername = req.user[0].benutzername
+    console.log('Benutzername ist: ', benutzername)
+
+    const tourenVonBenutzer = await getTourenVonBenutzer(req.db, benutzername)
+    console.log('Touren von Benutzer: ', tourenVonBenutzer)
+
+    // überprüfen, ob die zu bearbeitende Tour auch wirklich in der Liste der Touren des Nutzers ist
+    const tour = tourenVonBenutzer.find((tour) => tour.id === tourId)
+    console.log('Gefundene Tour: ', tour)
+
+    if (!tour) {
+      res.render('nicht-gefunden', {
+        layout: false,
+        objekt: 'Keine Tour mit dieser ID gefunden',
+        fallback: {
+          text: 'Zurück zur Tourenübersicht',
+          link: '/touren',
+        },
+      })
+      return
+    }
+
+    console.log('Nutzer hat Berechtigung zum Bearbeiten der Tour')
+
+    res.render('tour-bearbeiten', {
+      layout: false,
+    })
+  }
 })
 
 module.exports = router

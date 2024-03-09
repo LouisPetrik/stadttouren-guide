@@ -38,7 +38,9 @@
     <ul class="list-group">
       {{#each touren}}
       <li class="list-group-item">
-        <a href="/touren/{{this.name}}">{{this.name}}</a>
+        <a href="/tour/{{this.id}}">{{this.name}}</a>
+
+        <button class="btn btn-primary"><a class="btn-link" href="/tour-bearbeiten/{{this.id}}">Bearbeiten</a></button>
       </li>
       {{/each}}
     </ul>

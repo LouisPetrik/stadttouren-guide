@@ -47,6 +47,10 @@
     // Initialisiert die Karte und setzt die Ansicht auf einen spezifischen Punkt und Zoomlevel
     var map = L.map('map').setView([52.151222, 9.961226], 13)
 
+    const backendPunkte = JSON.parse('{{{ punkte }}}')
+
+    console.log("Punkte vom backend: ", backendPunkte);
+
     // Lädt und zeigt das Basis-Kartenmaterial von OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
@@ -60,6 +64,10 @@
         routingControl.setWaypoints(waypoints)
       }
     }
+
+
+
+
 
     /**
       * Gibt die URL des OSRM-Services zurück, abhängig davon, ob die Anwendung lokal oder auf Domain läuft

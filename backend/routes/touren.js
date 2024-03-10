@@ -104,6 +104,8 @@ router.get('/tour-bearbeiten/:id', async (req, res) => {
     const tour = tourenVonBenutzer.find((tour) => tour.id === tourId)
     console.log('Gefundene Tour: ', tour)
 
+    console.log('Punkte der Tour: ', tour.punkte)
+
     if (!tour) {
       res.render('nicht-gefunden', {
         layout: false,
@@ -120,6 +122,7 @@ router.get('/tour-bearbeiten/:id', async (req, res) => {
 
     res.render('tour-bearbeiten', {
       layout: false,
+      punkte: JSON.stringify(tour.punkte),
     })
   }
 })

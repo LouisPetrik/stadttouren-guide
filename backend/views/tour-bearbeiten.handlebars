@@ -74,6 +74,21 @@
       }
     }
 
+    /**
+      * Gibt die Koordinaten der Wegpunkte zurück, als Array von Objekten mit lat und lng
+      * @returns {Array} Array mit Koordinaten der Wegpunkte
+      */
+    function getPunkte() {
+      var waypoints = routingControl.getWaypoints()
+      var punkte = []
+      for (var i = 0; i < waypoints.length; i++) {
+        punkte.push(waypoints[i].latLng)
+      }
+      return punkte
+    }
+
+
+
     // Routing-Control-Initialisierung mit Start- und Endpunkt
     var routingControl = L.Routing.control({
       waypoints: [

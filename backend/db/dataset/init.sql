@@ -18,6 +18,7 @@ CREATE TABLE touren (
     benutzer_id INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
     beschreibung TEXT,
+    punkte JSONB, 
     CONSTRAINT fk_benutzer
       FOREIGN KEY(benutzer_id) 
 	  REFERENCES benutzer(id)
@@ -49,8 +50,26 @@ INSERT INTO benutzer (benutzername, passwort, email) VALUES
 
 
 /* Demo-Daten für Touren*/
-INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (2, 'Hildesheimer Rose', 'Eine Tour entlang der Wege, die die Hildesheimer Rose beschreibt');
-INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (4, 'Historische Altstadt', 'Erkunde die historische Altstadt Hildesheims, rund um den Marktplatz');
-INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (5, 'Neustadt', 'Rund um die Lamberti-Kirche erstreckt sich die Neustadt');
-INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (6, 'Weltkulturerbe', 'Hildesheim hat nicht nur ein Weltkulturerbe, sondern gleich zwei! Eine Tour zur St. Michaelis und zum Dom');
-INSERT INTO touren (benutzer_id, name, beschreibung) VALUES (2, 'Kneipentour', 'Eine Tour durch die Kneipen Hildesheims');
+INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (2, 'Hildesheimer Rose', 'Eine Tour entlang der Wege, die die Hildesheimer Rose beschreibt', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
+INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (4, 'Historische Altstadt', 'Erkunde die historische Altstadt Hildesheims, rund um den Marktplatz', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
+INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (5, 'Neustadt', 'Rund um die Lamberti-Kirche erstreckt sich die Neustadt', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
+INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (6, 'Weltkulturerbe', 'Hildesheim hat nicht nur ein Weltkulturerbe, sondern gleich zwei! Eine Tour zur St. Michaelis und zum Dom', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
+INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (2, 'Kneipentour', 'Eine Tour durch die Kneipen Hildesheims', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
+INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (6, 'Uni Standorte', 'Lerne die Standorte der Universität hildesheim kennen', '[
+    {
+        "lat": 52.134119,
+        "lng": 9.974163
+    },
+    {
+        "lat": 52.136336228609395,
+        "lng": 9.966466426849367
+    },
+    {
+        "lat": 52.136229321154055,
+        "lng": 9.970559124194551
+    },
+    {
+        "lat": 52.134158,
+        "lng": 9.967912
+    }
+]');  

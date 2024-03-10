@@ -11,7 +11,7 @@ function tourUpdaten(tourID, punkte) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ punkte }),
+    body: JSON.stringify({ punkte: getWegepunkte() }),
   })
     .then((res) => res.json())
     .then((data) => {

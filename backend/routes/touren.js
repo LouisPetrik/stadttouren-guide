@@ -32,6 +32,20 @@ router.post('/tour-erstellen', async (req, res) => {
   res.redirect('/touren')
 })
 
+// Request aus Form wird hierhin geschickt
+// Muss noch weiter impllementiert werden
+router.post('/tour-merken/:id', async (req, res) => {
+  const tourId = parseInt(req.params.id)
+  const benutzername = req.user[0].benutzername
+
+  console.log('Nutzer moechte Tour merken: ', tourId)
+
+  // Hier wird die Tour gemerkt
+  // await merkeTour(req.db, tourId, benutzername)
+
+  res.redirect('/touren')
+})
+
 // POST Handler zum Bearbeiten einer Tour, zugehörig zu /tour-bearbeiten (siehe unten)
 router.post('/tour-bearbeiten/:id', async (req, res) => {
   if (req.isAuthenticated()) {

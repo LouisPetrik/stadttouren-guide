@@ -46,16 +46,37 @@ router.post('/tour-merken/:id', async (req, res) => {
   res.redirect('/touren')
 })
 
-// POST Handler zum Bearbeiten einer Tour, zugehörig zu /tour-bearbeiten (siehe unten)
+/* POST Handler zum Bearbeiten einer Tour, zugehörig zu /tour-bearbeiten (siehe unten)
+ */
 router.post('/tour-bearbeiten/:id', async (req, res) => {
   if (req.isAuthenticated()) {
     const tourId = parseInt(req.params.id)
 
     console.log('Nutzer moechte Tour bearbeiten: ', tourId)
 
-    // inhalt des body
     console.log('Inhalt des Body: ', req.body.punkte)
+
+    // Ab hier muss validiert werden, ob der Nutzer auch wirklich die Berechtigung hat, die Tour zu bearbeiten.
+    // Auch wenn dies bereits für den GET-Request gemacht wurde, muss es hier nochmal gemacht werden, da der Nutzer auch die URL manipulieren könnte.
+    // z. B. wenn er manuell /tour-bearbeiten/1 aufruft, obwohl er die Tour nicht erstellt hat.
+
+    // Checken, ob Nutzer auch wirklich die Berechtigung hat, die Tour zu bearbeiten. Indem wir die Tour laden und schauen, ob der Nutzer der Ersteller ist.
+    const benutzername = req.user[0].benutzername
+
+    console.log('Benutzername ist: ', benutzername)
+    // Gucken, ob Tour mit ID eine Tour des Nutzers ist
+    const tourenVonBenutzer = await getTourenVonBenutzer(req.db, benutzername)
+
+    // überprüfen, ob die zu bearbeitende Tour auch wirklich in der Liste der Touren des Nutzers ist
+    const tour = tourenVonBenutzer.find((tour) => tour.id === tourId)
+
+    if (tour) {
+      console.log('POST: Benutzer hat Rechte zum Bearbeiten')
+      res.send('Erfolgreich, Rechte zum Bearbeiten vorhanden')
+      return
+    }
   } else {
+    console.log('POST: Nutzer hat keine Berechtigung zum Bearbeiten')
     res.send('Keine Berechtigung zum Bearbeiten einer Tour via POST-Request')
   }
 })
@@ -116,7 +137,7 @@ router.get('/tour-bearbeiten/:id', async (req, res) => {
       return
     }
 
-    console.log('Nutzer hat Berechtigung zum Bearbeiten der Tour')
+    console.log('GET: Nutzer hat Berechtigung zum Bearbeiten der Tour')
 
     res.render('tour-bearbeiten', {
       layout: false,

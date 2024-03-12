@@ -14,3 +14,26 @@
   color: black;
   text-decoration: none;
 }
+
+.speichern-button {
+  position: fixed; /* Fixed Positionierung, um den Button dauerhaft an der gleichen Stelle zu halten */
+  bottom: 20px; /* Abstand vom unteren Rand des Bildschirms */
+  right: 20px; /* Abstand vom rechten Rand des Bildschirms */
+  z-index: 1000 !important; /* Stellt sicher, dass der Button über der Karte liegt */
+  padding: 10px 20px; /* Innenabstand für bessere Lesbarkeit und Klickbarkeit */
+  background-color: #007bff; /* Hintergrundfarbe des Buttons */
+  color: white; /* Textfarbe */
+  border: none; /* Keine Randlinien */
+  border-radius: 5px; /* Abgerundete Ecken */
+  cursor: pointer; /* Ändert den Mauszeiger, um Interaktivität anzudeuten */
+  font-size: 25px; /* Schriftgröße */
+}
+
+.speichern-button:hover {
+  background-color: #0056b3; /* Dunklere Hintergrundfarbe beim Darüberfahren mit der Maus */
+}
+
+.speichern-button[disabled] {
+  background-color: grey;
+  cursor: not-allowed;
+}

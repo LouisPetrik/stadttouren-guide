@@ -85,7 +85,30 @@ router.get('/logout', (req, res, next) => {
 router.get('/benutzer/:benutzername', async (req, res) => {
   const benutzername = req.params.benutzername
 
-  //const benutzer = await getBenutzer(req.db, benutzername)
+  // Wenn der eingeloggte Benutzer auf seine eigene Seite geht, dann auf /profil weiterleiten
+  if (req.isAuthenticated() && req.user[0].benutzername === benutzername) {
+    res.redirect('/profil')
+    return
+  }
+
+  // Testen ob Benutzer existiert
+  const benutzer = await getBenutzer(req.db, benutzername)
+
+  // Testen, ob Benutzer in Liste von Benutzern existiert
+  if (benutzer.find((b) => b.benutzername === benutzername) === undefined) {
+    console.log('Gesuchter Benutzer existiert nicht')
+    res.render('nicht-gefunden', {
+      layout: false,
+      objekt: 'Benutzer nicht gefunden',
+      fallback: {
+        text: 'Zurück zur Startseite',
+        link: '/',
+      },
+    })
+    return
+  }
+
+  // Insofern Nutzer existiert, die Touren des Nutzers anzeigen
   const touren = await getTourenVonBenutzer(req.db, benutzername)
   res.render('benutzer', { benutzername: benutzername, touren: touren })
 })

@@ -1,6 +1,7 @@
 // Für die Verbindung zum Server, also Speichern und Bearbeiten von Touren
 /**
- *
+ * Wird sowohl beim Bearbeiten von Touren als auch beim Neu-Erstellen von Touren genutzt.
+ * Getriggert über "Speichern" Button
  * @param {*} tourID ID in der DB, selbe wie in der URL
  * @param {*} punkte Array von GPS Koordinaten
  */

@@ -77,7 +77,7 @@ router.get('/tour/:id', async (req, res) => {
 router.get('/tour', (req, res) => {
   res.render('nicht-gefunden', {
     layout: false,
-    objekt: 'Tour',
+    objekt: 'Keine Tour gefunden',
     fallback: {
       text: 'Zurück zur Tourenübersicht',
       link: '/touren',
@@ -125,6 +125,21 @@ router.get('/tour-bearbeiten/:id', async (req, res) => {
       punkte: JSON.stringify(tour.punkte),
     })
   }
+
+  // Sonst redirect auf login, wenn Nutzer nicht authentifiziert ist
+  res.redirect('/login')
+})
+
+// Fängt ab, wenn Nutzer keine ID angibt, also nur "/tour-bearbeiten" aufruft.
+router.get('/tour-bearbeiten', (req, res) => {
+  res.render('nicht-gefunden', {
+    layout: false,
+    objekt: 'Keine Tour zum Bearbeiten gefunden',
+    fallback: {
+      text: 'Zurück zur Tourenübersicht',
+      link: '/touren',
+    },
+  })
 })
 
 module.exports = router

@@ -51,9 +51,9 @@ INSERT INTO benutzer (benutzername, passwort, email) VALUES
 
 /* Demo-Daten für Touren*/
 INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (2, 'Hildesheimer Rose', 'Eine Tour entlang der Wege, die die Hildesheimer Rose beschreibt', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
-INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (4, 'Historische Altstadt', 'Erkunde die historische Altstadt Hildesheims, rund um den Marktplatz', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
+INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (4, 'Historische Altstadt', 'Erkunde die historische Altstadt Hildesheims, rund um den Marktplatz', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367},{"lat": 52.14207571628058,"lng": 9.962255033897238}]');
 INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (5, 'Neustadt', 'Rund um die Lamberti-Kirche erstreckt sich die Neustadt', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
-INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (6, 'Weltkulturerbe', 'Hildesheim hat nicht nur ein Weltkulturerbe, sondern gleich zwei! Eine Tour zur St. Michaelis und zum Dom', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
+INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (6, 'Weltkulturerbe', 'Hildesheim hat nicht nur ein Weltkulturerbe, sondern gleich zwei! Eine Tour zur St. Michaelis und zum Dom', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367},{"lat": 52.14207571628058,"lng": 9.962255033897238}]');
 INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (2, 'Kneipentour', 'Eine Tour durch die Kneipen Hildesheims', '[{"lat": 52.134119,"lng": 9.974163},{"lat": 52.136336228609395,"lng": 9.966466426849367}]');
 INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (6, 'Uni Standorte', 'Lerne die Standorte der Universität hildesheim kennen', '[
     {
@@ -71,5 +71,9 @@ INSERT INTO touren (benutzer_id, name, beschreibung, punkte) VALUES (6, 'Uni Sta
     {
         "lat": 52.134158,
         "lng": 9.967912
+    }, 
+    {
+    "lat": 52.16998373599523,
+    "lng": 9.936017990112306
     }
 ]');  

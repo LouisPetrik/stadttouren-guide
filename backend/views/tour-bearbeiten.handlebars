@@ -47,9 +47,16 @@
     // Initialisiert die Karte und setzt die Ansicht auf einen spezifischen Punkt und Zoomlevel
     var map = L.map('map').setView([52.151222, 9.961226], 13)
 
+    // Die Punkte, die die Tour ausmachen, direkt aus der Datenbank 
     const backendPunkte = JSON.parse('{{{ punkte }}}')
 
     console.log("Punkte vom backend: ", backendPunkte);
+
+    // Konvertiert die Punkte in das Format, das von Leaflet-Routing-Machine benötigt wird 
+    const waypoints = [];
+    for (const point of backendPunkte) {
+      waypoints.push(L.latLng(point.lat, point.lng));
+    }
 
     // Lädt und zeigt das Basis-Kartenmaterial von OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -97,12 +104,11 @@
 
 
 
+
+
     // Routing-Control-Initialisierung mit Start- und Endpunkt
     var routingControl = L.Routing.control({
-      waypoints: [
-        L.latLng(52.134119, 9.974163),
-        L.latLng(52.134158, 9.967912),
-      ],
+      waypoints: waypoints,
       routeWhileDragging: true,
       // Aktiviert die Geocoding-Funktion, um Adressen in Koordinaten umzuwandeln 
       //geocoder: L.Control.Geocoder.nominatim(),

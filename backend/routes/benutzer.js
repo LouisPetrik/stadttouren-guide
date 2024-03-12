@@ -20,6 +20,16 @@ router.get('/registrieren', (req, res) => {
 
 router.post('/registrieren', async (req, res) => {
   const { benutzername, email, password } = req.body
+
+  // checken, ob Passwort lang genug ist
+  if (password.length < 8) {
+    res.render('registrieren', {
+      messages: req.flash('error'),
+      time: Date.now(),
+    })
+    return
+  }
+
   const hash = await bcrypt.hash(password, saltRounds)
   // vorher überprüfen, ob der Benutzername oder die E-Mail schon existiert
   const benutzer = await benutzerExistiert(req.db, benutzername, email)

@@ -13,3 +13,10 @@
   </div>
   <button type="submit" class="btn btn-primary">Registrieren</button>
 </form>
+
+
+
+{{#if messages}}
+<p>Fehlermeldung: </p>
+<div class="alert alert-danger">{{messages}}</div>
+{{/if}}

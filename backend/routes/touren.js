@@ -104,15 +104,13 @@ router.get('/tour-bearbeiten/:id', async (req, res) => {
     const tour = tourenVonBenutzer.find((tour) => tour.id === tourId)
     console.log('Gefundene Tour: ', tour)
 
-    console.log('Punkte der Tour: ', tour.punkte)
-
     if (!tour) {
       res.render('nicht-gefunden', {
         layout: false,
-        objekt: 'Keine Tour mit dieser ID gefunden',
+        objekt: 'Fehlende Berechtigung oder keine Tour gefunden',
         fallback: {
-          text: 'Zurück zur Tourenübersicht',
-          link: '/touren',
+          text: 'Zurück zum Profil',
+          link: '/profil',
         },
       })
       return
@@ -124,10 +122,10 @@ router.get('/tour-bearbeiten/:id', async (req, res) => {
       layout: false,
       punkte: JSON.stringify(tour.punkte),
     })
+  } else {
+    // Wenn nicht authentifiziert, redirect auf login, wenn Nutzer nicht authentifiziert ist
+    res.redirect('/login')
   }
-
-  // Sonst redirect auf login, wenn Nutzer nicht authentifiziert ist
-  res.redirect('/login')
 })
 
 // Fängt ab, wenn Nutzer keine ID angibt, also nur "/tour-bearbeiten" aufruft.

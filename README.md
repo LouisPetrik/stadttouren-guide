@@ -21,3 +21,10 @@ http://localhost {
   reverse_proxy app:3000
 }
 ``` 
+
+
+## Demodaten 
+
+- Benutzername: anja
+- E-Mail: anja@web.de 
+- Passwort: 123 

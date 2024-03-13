@@ -1,17 +1,23 @@
 <form action="/login" method="post">
   <div class="form-group">
     <label for="email">Email:</label>
-    <input type="text" class="form-control" id="email" name="email">
+    <input type="email" class="form-control" id="email" name="email">
   </div>
   <div class="form-group">
     <label for="password">Passwort:</label>
+    <!-- Hier gibt es keine minimale Länge da Test-User Passwoerter nur 3 Zeichen haben --->
     <input type="password" class="form-control" id="password" name="password">
   </div>
   <button type="submit" class="btn btn-primary">Log In</button>
 </form>
 
 
+<p>Noch kein Account? <a href="/registrieren">Registrieren</a></p>
+
+
+
+
 {{#if messages}}
-  <p>Fehlermeldung: </p>
-  <div class="alert alert-danger">{{messages}}</div>
+<p>Fehlermeldung: </p>
+<div class="alert alert-danger">{{messages}}</div>
 {{/if}}

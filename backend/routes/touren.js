@@ -162,3 +162,10 @@ router.get('/tour-bearbeiten', (req, res) => {
 })
 
 module.exports = router
+
+router.get('/gespeicherte-touren', async (req, res) => {
+  //const benutzername = req.user[0].benutzername
+  //const gespeicherteTouren = await getGespeicherteTouren(req.db, benutzername)
+  //res.render('gespeicherte-touren', { gespeicherteTouren })
+  res.render('gespeicherte-touren')
+})

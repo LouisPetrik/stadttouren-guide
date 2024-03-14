@@ -1,7 +1,14 @@
 // const { db } = require('pg')
 const bcrypt = require('bcrypt')
 
-// nutzer in die datenbank schreiben
+/**
+ * Benutzer anlegen
+ * @param {*} db Datenbankverbindung
+ * @param {*} benutzername Selbstgewählter Benutzername
+ * @param {*} passwort Selbstgewähltes Passwort
+ * @param {*} email Hinterlegte Email-Adresse
+ * @returns {Promise} - Gibt den angelegten Benutzer zurück
+ */
 const benutzerAnlegen = async (db, benutzername, passwort, email) => {
   const res = await db.query(
     'INSERT INTO benutzer (benutzername, passwort, email) VALUES ($1, $2, $3) RETURNING *',
@@ -10,13 +17,22 @@ const benutzerAnlegen = async (db, benutzername, passwort, email) => {
   return res.rows[0]
 }
 
-// TEST: Dafür da alle benutzer auszugeben
+/**
+ * TEST: Gibt alle Benutzer aus
+ * @param {*} db
+ * @returns {Promise} - Gibt alle Benutzer zurück
+ */
 const getBenutzer = async (db) => {
   const res = await db.query('SELECT * FROM benutzer')
   return res.rows
 }
 
-// Wird genutzt um beim Authentifizieren den Benutzer zu holen
+/**
+ * Benutzer basierend auf ID holen, genutzt beim Authentifizieren u. a.
+ * @param {*} db
+ * @param {*} id
+ * @returns {Promise} - Gibt den gefundenen Benutzer zurück
+ */
 const getBenutzerById = async (db, id) => {
   const res = await db.query('SELECT * FROM benutzer WHERE id = $1', [id])
   return res.rows
@@ -99,7 +115,11 @@ const benutzerExistiert = async (db, benutzername, email) => {
   return res.rows
 }
 
-// Alle Touren mit Benutzernamen von dem Ersteller ausgeben. Genutzt in: touren.handlebars /touren
+/**
+ * gibt alle Touren von allen Benutzern zurück, genutzt für die Tourenübersicht da auch der Benutzername des Erstellers angezeigt werden soll
+ * @param {*} db
+ * @returns {Promise} - Gibt alle Touren zurück
+ */
 const getTouren = async (db) => {
   //const res = await db.query('SELECT * FROM touren')
 
@@ -120,8 +140,13 @@ INNER JOIN
   return res.rows
 }
 
-// Nur Touren von einem bestimmten Benutzer ausgeben (basierend auf Benutzername)
-// Verwendung: profil, benutzer/<benutzername>
+/**
+ * gibt alle Touren von einem bestimmten Benutzer zurück.
+ * Verwendung: profil, benutzer/<benutzername>
+ * @param {*} db
+ * @param {*} benutzername
+ * @returns {Promise} - Gibt alle Touren des Benutzers zurück
+ */
 const getTourenVonBenutzer = async (db, benutzername) => {
   const res = await db.query(
     'SELECT * FROM touren WHERE benutzer_id = (SELECT id FROM benutzer WHERE benutzername = $1)',
@@ -130,6 +155,14 @@ const getTourenVonBenutzer = async (db, benutzername) => {
   return res.rows
 }
 
+/**
+ * Fügt eine Tour hinzu
+ * @param {*} db
+ * @param {*} name
+ * @param {*} beschreibung
+ * @param {*} benutzer_id
+ * @returns {Promise} - Gibt die hinzugefügte Tour zurück
+ */
 const tourHinzufuegen = async (db, name, beschreibung, benutzer_id) => {
   const res = await db.query(
     'INSERT INTO touren (name, beschreibung, benutzer_id) VALUES ($1, $2, $3, $4) RETURNING *',

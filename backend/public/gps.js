@@ -1,7 +1,7 @@
 /**
- * GPS-Tracking für die Karte, wird dort mehrfach aufgerufne
+ * GPS-Tracking, wird ausgeführt im Interval
+ * @return {void}
  */
-
 function positionAbfragen() {
   navigator.geolocation.getCurrentPosition(
     (position) => {

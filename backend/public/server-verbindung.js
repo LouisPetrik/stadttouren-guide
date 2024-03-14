@@ -7,7 +7,7 @@
  * @param {*} punkte Array von GPS Koordinaten
  */
 function tourUpdaten() {
-  // ID aus URL holen
+  // ID der Tour aus URL holen
   const tourID = window.location.pathname.split('/').pop()
   console.log('Tour ID beim Updaten / Speichern: ', tourID)
   // POST request zum Server

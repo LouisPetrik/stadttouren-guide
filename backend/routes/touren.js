@@ -6,6 +6,7 @@ const {
   tourHinzufuegen,
   getBenutzer,
   getTourenVonBenutzer,
+  updateTour,
 } = require('../db')
 const router = express.Router()
 
@@ -54,6 +55,7 @@ router.post('/tour-bearbeiten/:id', async (req, res) => {
 
     console.log('Nutzer moechte Tour bearbeiten: ', tourId)
 
+    // Body müssen [{lat: 1, lng: 2}, {lat: 3, lng: 4}, ...] sein
     console.log('Inhalt des Body: ', req.body.punkte)
 
     // Ab hier muss validiert werden, ob der Nutzer auch wirklich die Berechtigung hat, die Tour zu bearbeiten.
@@ -72,6 +74,13 @@ router.post('/tour-bearbeiten/:id', async (req, res) => {
 
     if (tour) {
       console.log('POST: Benutzer hat Rechte zum Bearbeiten')
+
+      // Hier wird die Tour bearbeitet
+      // zunächst die Punkte zu JSON String umwandeln
+      const punkteJSON = JSON.stringify(req.body.punkte)
+
+      await updateTour(req.db, tourId, punkteJSON)
+
       res.send('Erfolgreich, Rechte zum Bearbeiten vorhanden')
       return
     }
@@ -161,11 +170,11 @@ router.get('/tour-bearbeiten', (req, res) => {
   })
 })
 
-module.exports = router
-
 router.get('/gespeicherte-touren', async (req, res) => {
   //const benutzername = req.user[0].benutzername
   //const gespeicherteTouren = await getGespeicherteTouren(req.db, benutzername)
   //res.render('gespeicherte-touren', { gespeicherteTouren })
   res.render('gespeicherte-touren')
 })
+
+module.exports = router

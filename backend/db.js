@@ -171,6 +171,22 @@ const tourHinzufuegen = async (db, name, beschreibung, benutzer_id) => {
   return res.rows[0]
 }
 
+/**
+ * Genutzt, um bestehende Touren in hinsicht auf Punkte zu aktualisieren.
+ * Genutzt in Bearbeiten von Touren im Profil bzw. POST: /tour-bearbeiten/:tourId
+ * @param {*} db Datenbankverbindung
+ * @param {*} tourId ID in der DB, selbe wie in der URL
+ * @param {*} punkte Array von GPS Koordinaten (Punkten). Wird als JSON-String übergeben
+ * @returns
+ */
+const updateTour = async (db, tourId, punkte) => {
+  const res = await db.query('UPDATE touren SET punkte = $1 WHERE id = $2', [
+    punkte,
+    tourId,
+  ])
+  return res.rows
+}
+
 // Exportieren der Funktionen
 module.exports = {
   benutzerAnlegen,
@@ -183,4 +199,5 @@ module.exports = {
   getTouren,
   getTourenVonBenutzer,
   tourHinzufuegen,
+  updateTour,
 }

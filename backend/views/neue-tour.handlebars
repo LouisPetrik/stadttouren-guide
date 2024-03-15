@@ -104,8 +104,8 @@
     // Routing-Control-Initialisierung mit Start- und Endpunkt
     var routingControl = L.Routing.control({
       waypoints: [
-        L.latLng(52.151222, 9.961226),
-        L.latLng(52.151222, 9.961026),
+        //   L.latLng(52.151222, 9.961226),
+        //  L.latLng(52.151222, 9.961026),
 
       ],
 
@@ -148,8 +148,10 @@
     // Funktion, die bei einem Klick auf die Karte aufgerufen wird
     function onMapClick(e) {
       // Fügt einen neuen Wegpunkt am Ort des Klicks hinzu
-      routingControl.spliceWaypoints(routingControl.getWaypoints().length - 1, 0, e.latlng)
-
+      // Parameter: Index, Anzahl der zu entfernenden Wegpunkte, Koordinaten des neuen Wegpunkts
+      //routingControl.spliceWaypoints(routingControl.getWaypoints().length - 1, 0, e.latlng)
+      //routingControl.spliceWaypoints(routingControl.getWaypoints().length - 1, 0, e.latlng)
+      routingControl.spliceWaypoints(0, 2, e.latlng)
 
       toggleSpeichernButtonAktiviert()
     }
@@ -158,8 +160,6 @@
     function startPunktHinzufuegen() {
       routingControl.spliceWaypoints(0, 0, map.getCenter())
       //toggleSpeichernButtonAktiviert()
-
-
     }
 
     // reset the waypoints

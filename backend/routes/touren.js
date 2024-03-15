@@ -119,6 +119,15 @@ router.get('/tour', (req, res) => {
   })
 })
 
+router.get('/neue-tour', (req, res) => {
+  // Nutzer muss eingeloggt sein, um eine Tour zu erstellen, damit Nutzer in DB zugewiesen werden kann.
+  if (req.isAuthenticated()) {
+    res.render('neue-tour')
+  } else {
+    res.redirect('/login')
+  }
+})
+
 // Nutzer landet auf dieser Seite, wenn er eine Tour von sich bearbeiten möchte
 router.get('/tour-bearbeiten/:id', async (req, res) => {
   const tourId = parseInt(req.params.id)

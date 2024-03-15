@@ -48,11 +48,18 @@ services:
     ports:
       - '5000:5000'
     command: /bin/bash -c "\
-      osrm-routed --algorithm mld /data/niedersachsen-latest.osrm"
+      if [ -f /data/niedersachsen-latest.osrm ]; then \
+        echo 'Datei gefunden, starte osrm-routed...'; \
+        osrm-routed --algorithm mld /data/niedersachsen-latest.osrm; \
+      else \
+        echo 'Datei nicht gefunden, starte Generierungsprozess...'; \
+        osrm-extract -p /opt/foot.lua /data/niedersachsen-latest.osm.pbf && \
+        osrm-partition /data/niedersachsen-latest.osrm && \
+        osrm-customize /data/niedersachsen-latest.osrm && \
+        osrm-routed --algorithm mld /data/niedersachsen-latest.osrm; \
+      fi"
     depends_on:
       - app
-
-
 
 volumes:
   #postgres-data:

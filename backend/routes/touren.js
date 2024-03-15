@@ -122,7 +122,9 @@ router.get('/tour', (req, res) => {
 router.get('/neue-tour', (req, res) => {
   // Nutzer muss eingeloggt sein, um eine Tour zu erstellen, damit Nutzer in DB zugewiesen werden kann.
   if (req.isAuthenticated()) {
-    res.render('neue-tour')
+    res.render('neue-tour', {
+      layout: false,
+    })
   } else {
     res.redirect('/login')
   }

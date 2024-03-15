@@ -35,6 +35,7 @@ Bearbeiten von Touren hier nicht moeglich -->
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
   <!-- Ab hier eigene Skripte -->
+  <script src="/public/util.js"></script>
   <script src="/public/gps.js"></script>
   <script src="/public/leaflet-funktionen.js"></script>
 
@@ -62,28 +63,7 @@ Bearbeiten von Touren hier nicht moeglich -->
       attribution: '© OpenStreetMap contributors',
     }).addTo(map)
 
-    /* 
-    function removeWaypoint(index) {
-      var waypoints = routingControl.getWaypoints()
-      if (waypoints.length > 2) {
-        // Verhindern, dass die letzten zwei Wegpunkte entfernt werden
-        waypoints.splice(index, 1)
-        routingControl.setWaypoints(waypoints)
-      }
-    } */
 
-    /**
-      * Gibt die URL des OSRM-Services zurück, abhängig davon, ob die Anwendung lokal oder auf Domain läuft
-      * @returns {string} URL des OSRM-Services 
-      * Caddy leitet alles auf /route an OSRM weiter. Lokal über port 80, sonst über 443 da https dann aktiv. 
-      */
-    function getServiceURL() {
-      if (window.location.hostname === 'localhost') {
-        return 'http://localhost/route/v1'
-      } else {
-        return 'https://stadttouren.online/route/v1'
-      }
-    }
 
     // Routing-Control-Initialisierung mit Start- und Endpunkt
     var routingControl = L.Routing.control({
@@ -94,7 +74,7 @@ Bearbeiten von Touren hier nicht moeglich -->
 
       createMarker: function (i, waypoint, n) {
         var marker = L.marker(waypoint.latLng, {
-          draggable: true,
+          draggable: false,
         })
 
         // Event-Listener für das Klicken auf den Marker

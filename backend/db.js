@@ -176,7 +176,7 @@ const tourHinzufuegen = async (db, name, beschreibung, benutzer_id) => {
  * Genutzt in Bearbeiten von Touren im Profil bzw. POST: /tour-bearbeiten/:tourId
  * @param {*} db Datenbankverbindung
  * @param {*} tourId ID in der DB, selbe wie in der URL
- * @param {*} punkte Array von GPS Koordinaten (Punkten). Wird als JSON-String übergeben
+ * @param {*} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
  * @returns
  */
 const updateTour = async (db, tourId, punkte) => {

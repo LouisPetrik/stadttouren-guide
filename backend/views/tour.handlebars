@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Alle Touren die eigenen und auch von anderen Nutzern in normaler Ansicht. 
+Bearbeiten von Touren hier nicht moeglich -->
 
 <head>
   <title>Tour: x</title>
@@ -36,10 +38,6 @@
   <script src="/public/gps.js"></script>
   <script src="/public/leaflet-funktionen.js"></script>
   <script src="/public/server-verbindung.js"></script>
-
-
-
-
 
 
   <script>
@@ -110,6 +108,9 @@
     positionAbfragen();
     setInterval(positionAbfragen, 5000);
 
+
+    // auskommentiert, da es ermoeglicht Touren zu bearbeiten. In diesem Template aber nur zum Anzeigen und Durchführen von Touren  
+    /*
     // Funktion, die bei einem Klick auf die Karte aufgerufen wird
     function onMapClick(e) {
       // Fügt einen neuen Wegpunkt am Ort des Klicks hinzu
@@ -122,6 +123,7 @@
 
     // Event-Listener, der auf Klicks auf der Karte reagiert
     map.on('click', onMapClick)
+    */
   </script>
 </body>
 

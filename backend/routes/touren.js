@@ -5,6 +5,7 @@ const {
   getTouren,
   tourHinzufuegen,
   getBenutzer,
+  getTourById,
   getTourenVonBenutzer,
   updateTour,
 } = require('../db')
@@ -95,11 +96,14 @@ router.get('/tour/:id', async (req, res) => {
   const id = req.params.id
 
   // Wichtige Daten der Tour laden
-  // const tour = await getTour(req.db, id)
+  const tour = await getTourById(req.db, id)
+
+  const { punkte } = tour[0]
 
   console.log('ID ist: ', id)
   res.render('tour', {
     layout: false,
+    punkte: JSON.stringify(punkte),
   })
 })
 

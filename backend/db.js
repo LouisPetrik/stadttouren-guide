@@ -141,6 +141,17 @@ INNER JOIN
 }
 
 /**
+ * Tour basierend auf ID holen, übergeben in URL Parameter
+ * @param {*} db Datenbankverbindung
+ * @param {*} id ID der Tour in DB, meist in URL übergebne
+ * @returns alle Felder der jeweiligen Tour
+ */
+const getTourById = async (db, id) => {
+  const res = await db.query('SELECT * FROM touren WHERE id = $1', [id])
+  return res.rows
+}
+
+/**
  * gibt alle Touren von einem bestimmten Benutzer zurück.
  * Verwendung: profil, benutzer/<benutzername>
  * @param {*} db
@@ -197,6 +208,7 @@ module.exports = {
   passwortAendern,
   benutzerExistiert,
   getTouren,
+  getTourById,
   getTourenVonBenutzer,
   tourHinzufuegen,
   updateTour,

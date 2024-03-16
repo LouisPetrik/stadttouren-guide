@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: public/util.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,58 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: public/util.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Entwernt einen Wegpunkt aus der Liste der Wegpunkte
+ * @param {*} index in der Liste der Wegpunkte
+ */
+function removeWaypoint(index) {
+  var waypoints = routingControl.getWaypoints()
+  if (waypoints.length > 2) {
+    // Verhindern, dass die letzten zwei Wegpunkte entfernt werden
+    waypoints.splice(index, 1)
+    routingControl.setWaypoints(waypoints)
+  }
 
+  toggleSpeichernButtonAktiviert()
+}
 
-    <h3> </h3>
+/**
+ * Gibt die URL des OSRM-Services zurück, abhängig davon, ob die Anwendung lokal oder auf Domain läuft
+ * @returns {string} URL des OSRM-Services
+ * Caddy leitet alles auf /route an OSRM weiter. Lokal über port 80, sonst über 443 da https dann aktiv.
+ */
+function getServiceURL() {
+  if (window.location.hostname === 'localhost') {
+    return 'http://localhost/route/v1'
+  } else {
+    return 'https://stadttouren.online/route/v1'
+  }
+}
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Gibt die Koordinaten der Wegpunkte zurück, als Array von Objekten mit lat und lng
+ * @returns {Array} Array mit Koordinaten der Wegpunkte
+ */
+function getPunkte() {
+  var waypoints = routingControl.getWaypoints()
+  var punkte = []
+  for (var i = 0; i &lt; waypoints.length; i++) {
+    punkte.push(waypoints[i].latLng)
+  }
+  return punkte
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

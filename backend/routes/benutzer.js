@@ -62,6 +62,19 @@ router.post(
   })
 )
 
+/**
+ * @api {get} /profil
+ * @apiName GetUser
+ * @apiGroup Users
+ *
+ * @apiParam {Number} id Die ID des Benutzers.
+ *
+ * @apiSuccess {Object} user Ein Objekt mit den Benutzerdaten.
+ * @apiSuccess {String} user.name Der Name des Benutzers.
+ * @apiSuccess {Number} user.age Das Alter des Benutzers.
+ *
+ * @apiError 404 Benutzer nicht gefunden.
+ */
 router.get('/profil', async (req, res) => {
   if (req.isAuthenticated()) {
     // benutzername aus der Session holen

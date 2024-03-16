@@ -1341,6 +1341,397 @@
     
 
     
+    <h4 class="name" id="getPunkte"><span class="type-signature"></span>getPunkte<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Gibt die Koordinaten der Wegpunkte zurück, als Array von Objekten mit lat und lng
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_util.js.html">public/util.js</a>, <a href="public_util.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Array mit Koordinaten der Wegpunkte
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getServiceURL"><span class="type-signature"></span>getServiceURL<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Gibt die URL des OSRM-Services zurück, abhängig davon, ob die Anwendung lokal oder auf Domain läuft
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_util.js.html">public/util.js</a>, <a href="public_util.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    URL des OSRM-Services
+Caddy leitet alles auf /route an OSRM weiter. Lokal über port 80, sonst über 443 da https dann aktiv.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getTourById"><span class="type-signature">(async) </span>getTourById<span class="signature">(db, id)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Tour basierend auf ID holen, übergeben in URL Parameter
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>db</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Datenbankverbindung</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ID der Tour in DB, meist in URL übergebne</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="db.js.html">db.js</a>, <a href="db.js.html#line149">line 149</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    alle Felder der jeweiligen Tour
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="getTouren"><span class="type-signature">(async) </span>getTouren<span class="signature">(db)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
@@ -1625,7 +2016,7 @@ Verwendung: profil, benutzer/<benutzername>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db.js.html">db.js</a>, <a href="db.js.html#line150">line 150</a>
+        <a href="db.js.html">db.js</a>, <a href="db.js.html#line161">line 161</a>
     </li></ul></dd>
     
 
@@ -1940,7 +2331,7 @@ Verwendung: profil, benutzer/<benutzername>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_gps.js.html">public/gps.js</a>, <a href="public_gps.js.html#line6">line 6</a>
+        <a href="public_gps.js.html">public/gps.js</a>, <a href="public_gps.js.html#line5">line 5</a>
     </li></ul></dd>
     
 
@@ -1983,6 +2374,143 @@ Verwendung: profil, benutzer/<benutzername>
 </dl>
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="removeWaypoint"><span class="type-signature"></span>removeWaypoint<span class="signature">(index)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Entwernt einen Wegpunkt aus der Liste der Wegpunkte
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">in der Liste der Wegpunkte</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_util.js.html">public/util.js</a>, <a href="public_util.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2164,7 +2692,7 @@ Verwendung: profil, benutzer/<benutzername>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="db.js.html">db.js</a>, <a href="db.js.html#line166">line 166</a>
+        <a href="db.js.html">db.js</a>, <a href="db.js.html#line177">line 177</a>
     </li></ul></dd>
     
 
@@ -2378,6 +2906,212 @@ Getriggert über "Speichern" Button
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="updateTour"><span class="type-signature">(async) </span>updateTour<span class="signature">(db, tourId, punkte)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Genutzt, um bestehende Touren in hinsicht auf Punkte zu aktualisieren.
+Genutzt in Bearbeiten von Touren im Profil bzw. POST: /tour-bearbeiten/:tourId
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>db</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Datenbankverbindung</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tourId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ID in der DB, selbe wie in der URL</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>punkte</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="db.js.html">db.js</a>, <a href="db.js.html#line193">line 193</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - Gibt die aktualisierte Tour zurück
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -2393,13 +3127,13 @@ Getriggert über "Speichern" Button
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#benutzerAnlegen">benutzerAnlegen</a></li><li><a href="global.html#benutzerExistiert">benutzerExistiert</a></li><li><a href="global.html#benutzerLoeschen">benutzerLoeschen</a></li><li><a href="global.html#benutzerPruefen">benutzerPruefen</a></li><li><a href="global.html#db">db</a></li><li><a href="global.html#getBenutzer">getBenutzer</a></li><li><a href="global.html#getBenutzerById">getBenutzerById</a></li><li><a href="global.html#getTouren">getTouren</a></li><li><a href="global.html#getTourenVonBenutzer">getTourenVonBenutzer</a></li><li><a href="global.html#passwortAendern">passwortAendern</a></li><li><a href="global.html#positionAbfragen">positionAbfragen</a></li><li><a href="global.html#tourHinzufuegen">tourHinzufuegen</a></li><li><a href="global.html#tourUpdaten">tourUpdaten</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#benutzerAnlegen">benutzerAnlegen</a></li><li><a href="global.html#benutzerExistiert">benutzerExistiert</a></li><li><a href="global.html#benutzerLoeschen">benutzerLoeschen</a></li><li><a href="global.html#benutzerPruefen">benutzerPruefen</a></li><li><a href="global.html#db">db</a></li><li><a href="global.html#getBenutzer">getBenutzer</a></li><li><a href="global.html#getBenutzerById">getBenutzerById</a></li><li><a href="global.html#getPunkte">getPunkte</a></li><li><a href="global.html#getServiceURL">getServiceURL</a></li><li><a href="global.html#getTourById">getTourById</a></li><li><a href="global.html#getTouren">getTouren</a></li><li><a href="global.html#getTourenVonBenutzer">getTourenVonBenutzer</a></li><li><a href="global.html#passwortAendern">passwortAendern</a></li><li><a href="global.html#positionAbfragen">positionAbfragen</a></li><li><a href="global.html#removeWaypoint">removeWaypoint</a></li><li><a href="global.html#tourHinzufuegen">tourHinzufuegen</a></li><li><a href="global.html#tourUpdaten">tourUpdaten</a></li><li><a href="global.html#updateTour">updateTour</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Mar 14 2024 21:43:01 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Mar 16 2024 09:24:50 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

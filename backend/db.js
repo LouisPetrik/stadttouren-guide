@@ -188,7 +188,7 @@ const tourHinzufuegen = async (db, name, beschreibung, benutzer_id) => {
  * @param {*} db Datenbankverbindung
  * @param {*} tourId ID in der DB, selbe wie in der URL
  * @param {*} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
- * @returns
+ * @returns {Promise} - Gibt die aktualisierte Tour zurück
  */
 const updateTour = async (db, tourId, punkte) => {
   const res = await db.query('UPDATE touren SET punkte = $1 WHERE id = $2', [

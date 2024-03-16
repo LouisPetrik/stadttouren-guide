@@ -17,16 +17,18 @@
         <br />
         <span>{{this.beschreibung}}</span>
 
+        <div class="tour-details">
+          {{#if this.distanz}}
+          <span>Strecke: {{this.distanz}} m</span>
+          {{/if}}
 
-        {{#if this.distanz}}
-        <span>{{this.distanz}} m</span>
-        {{/if}}
 
+          {{#if this.dauer}}
+          <span>Dauer: {{this.dauer}} min</span>
+          {{/if}}
+        </div>
 
-        {{#if this.dauer}}
-        <span>{{this.dauer}} min</span>
-        {{/if}}
-
+        <br />
         <button class="btn btn-primary"><a class="btn-link" href="/tour/{{this.id}}">Starten</a></button>
         <button class="btn btn-info" onclick="tourMerken({{this.id}})">Merken</button>
       </li>

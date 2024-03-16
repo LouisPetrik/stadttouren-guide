@@ -46,6 +46,11 @@
     // Initialisiert die Karte und setzt die Ansicht auf einen spezifischen Punkt und Zoomlevel
     var map = L.map('map').setView([52.151222, 9.961226], 13)
 
+    // Werden überschrieben von funktion tourDaten in der util.js. Ging nicht als global variable, da Berechnung an Event listener gebunden ist... 
+    let distanz = 0;
+    let dauer = 0;
+
+
     // Die Punkte, die die Tour ausmachen, direkt aus der Datenbank 
     const backendPunkte = JSON.parse('{{{ punkte }}}')
 
@@ -103,6 +108,11 @@
         profile: 'foot',
       }),
     }).addTo(map)
+
+
+    // compute the distance of the route
+    routingControl.on('routesfound', tourDaten);
+
 
 
     // Dient wohl erstmal als Platzhalter 

@@ -47,18 +47,6 @@ function tourDaten(e) {
   const routes = e.routes
   const summary = routes[0].summary
   distanz = summary.totalDistance
-  dauer = summary.totalTime / 60
-}
 
-function getTourDaten() {
-  routingControl.getPlan(function (err, routes) {
-    if (err || !routes.length) {
-      console.error('Error calculating route:', err)
-      return
-    }
-    var route = routes[0]
-    var distance = route.summary.totalDistance
-    var time = route.summary.totalTime / 60
-    console.log('Total distance of the tour:', distance, 'total time:', time)
-  })()
+  dauer = Math.round(summary.totalTime / 60, 2)
 }

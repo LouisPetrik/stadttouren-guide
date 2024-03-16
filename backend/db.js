@@ -168,16 +168,28 @@ const getTourenVonBenutzer = async (db, benutzername) => {
 
 /**
  * Fügt eine Tour hinzu
- * @param {*} db
- * @param {*} name
- * @param {*} beschreibung
- * @param {*} benutzer_id
+ * @param {*} db Datenbankverbindung
+ * @param {*} name Name der Tour
+ * @param {*} beschreibung Beschreibung der Tour
+ * @param {*} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
+ * @param {*} benutzer_id ID des Benutzers, der die Tour hinzufügt
  * @returns {Promise} - Gibt die hinzugefügte Tour zurück
  */
-const tourHinzufuegen = async (db, name, beschreibung, benutzer_id) => {
+const tourHinzufuegen = async (db, name, beschreibung, punkte, benutzer_id) => {
+  console.log(
+    'DB aufruf mit:',
+    'name:',
+    name,
+    'beschreibung:',
+    beschreibung,
+    'punkte:',
+    punkte,
+    'benutzer id:',
+    benutzer_id
+  )
   const res = await db.query(
-    'INSERT INTO touren (name, beschreibung, benutzer_id) VALUES ($1, $2, $3, $4) RETURNING *',
-    [name, beschreibung, benutzer_id]
+    'INSERT INTO touren (name, beschreibung, punkte, benutzer_id) VALUES ($1, $2, $3, $4) RETURNING *',
+    [name, beschreibung, punkte, benutzer_id]
   )
   return res.rows[0]
 }

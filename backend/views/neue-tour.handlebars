@@ -30,7 +30,7 @@
 
 <body>
   <div id="map" class="map"></div>
-  <button disabled="true" class="speichern-button" onclick="tourUpdaten()">Speichern</button>
+  <button disabled="true" class="speichern-button" onclick="tourInitialSpeichern()">Speichern</button>
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
@@ -39,12 +39,38 @@
   <script src="/public/util.js"></script>
   <script src="/public/gps.js"></script>
 
-  <script src="/public/server-verbindung.js"></script>
+
 
 
   <script>
     // Initialisiert die Karte und setzt die Ansicht auf einen spezifischen Punkt und Zoomlevel
     var map = L.map('map').setView([52.151222, 9.961226], 13)
+
+
+    function tourInitialSpeichern() {
+      // ID der Tour aus URL holen
+      //const tourID = window.location.pathname.split('/').pop()
+      //console.log('Tour ID beim Updaten / Speichern: ', tourID)
+      // POST request zum Server
+      fetch('/neue-tour/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ punkte: getPunkte() }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log('Erfolgreich:', data)
+
+          // dann redirected zur /tour-bearbeiten/:id, wobei die ID aus der Antwort des Servers kommt
+          window.location.href = '/tour-bearbeiten/' + data.id
+
+        })
+        .catch((error) => {
+          console.error('Error:', error)
+        })
+    }
 
 
     // Die Punkte, die die Tour ausmachen, direkt aus der Datenbank 

@@ -20,6 +20,7 @@ router.get('/touren', async (req, res) => {
 })
 
 // DIese Funktion soll sowohl zum erstellen als auch zum bearbeiten von Touren genutzt werden. Änderungen werden hierhin geschickt
+// DEPRECATED
 router.post('/tour-erstellen', async (req, res) => {
   const { name, beschreibung } = req.body
 
@@ -140,6 +141,29 @@ router.get('/tour-bearbeiten/neu', (req, res) => {
     })
   } else {
     res.redirect('/login')
+  }
+})
+
+// Empfängt das Initiale Speichern einer Tour unter /tour-bearbeiten/neu
+// Insoferne erfolgreich, leitet auf /tour-bearbeiten/:id weiter.
+router.post('/neue-tour', async (req, res) => {
+  if (req.isAuthenticated()) {
+    const { punkte } = req.body
+    const benutzer_id = req.user[0].id
+
+    console.log('Tour erstellt von', benutzer_id)
+    console.log('NEU Punkte der Tour: ', punkte)
+
+    // Query gibt kompletten DB eintrag der Tour zurück, sodass die ID der Tour genutzt werden kann für redirect
+    const tour = await tourHinzufuegen(
+      req.db,
+      'Neue Tour',
+      'Beschreibung folgt',
+      JSON.stringify(punkte), // müssen die weiter formatiert werden?
+      benutzer_id
+    )
+
+    res.json({ id: tour.id })
   }
 })
 

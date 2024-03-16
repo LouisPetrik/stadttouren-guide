@@ -8,13 +8,13 @@ const {
   getTourById,
   getTourenVonBenutzer,
   updateTour,
+  tourLoeschen,
 } = require('../db')
 const router = express.Router()
 
 // Test: Komplette liste vno Touren
 router.get('/touren', async (req, res) => {
   const tourenListe = await getTouren(req.db)
-  console.log('Tourenliste: ', tourenListe)
 
   res.render('touren', { touren: tourenListe })
 })
@@ -227,6 +227,34 @@ router.get('/gespeicherte-touren', async (req, res) => {
   //const gespeicherteTouren = await getGespeicherteTouren(req.db, benutzername)
   //res.render('gespeicherte-touren', { gespeicherteTouren })
   res.render('gespeicherte-touren')
+})
+
+// Wenn aus /profil per fetch-POST eine Tour gelöscht werden soll
+router.post('/tour-loeschen', async (req, res) => {
+  if (req.isAuthenticated()) {
+    const tourId = parseInt(req.body.tourId)
+    const benutzername = req.user[0].benutzername
+
+    console.log('Nutzer moechte Tour loeschen: ', tourId)
+
+    // hier noch testen, ob Nutzer auch wirklich die Berechtigung hat, die Tour zu löschen
+
+    // Hier wird die Tour gelöscht
+
+    const rowCount = await tourLoeschen(req.db, tourId, benutzername)
+
+    if (rowCount > 0) {
+      res
+        .status(200)
+        .json({ success: true, message: 'Tour erfolgreich geloescht' })
+    } else {
+      res
+        .status(404)
+        .json({ success: false, message: 'Tour konnte nicht geloescht werden' })
+    }
+  } else {
+    res.redirect('/login')
+  }
 })
 
 module.exports = router

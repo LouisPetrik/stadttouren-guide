@@ -42,6 +42,8 @@
         <a href="/tour/{{this.id}}">{{this.name}}</a>
 
         <button class="btn btn-primary"><a class="btn-link" href="/tour-bearbeiten/{{this.id}}">Bearbeiten</a></button>
+        <button class="btn btn-danger"><a data-tour-id="{{this.id}}" class="btn-link"
+            onclick="tourLoeschen(this)">Löschen</a></button>
       </li>
       {{/each}}
     </ul>
@@ -62,3 +64,24 @@
 </div>
 
 <div id="form-ziel"></div>
+
+<script>
+  function tourLoeschen(button) {
+    // POST request an den Server zur loeschung 
+    fetch('/tour-loeschen', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tourId: button.getAttribute('data-tour-id')
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Erfolgreich:', data)
+        // Seite neu laden
+        window.location.reload()
+      })
+  }
+</script>

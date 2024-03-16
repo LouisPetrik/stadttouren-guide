@@ -210,6 +210,18 @@ const updateTour = async (db, tourId, punkte) => {
   return res.rows
 }
 
+/**
+ * Loeschen einer Tour per ID, ausgeführt in /profil
+ * @param {*} db Datenbankverbindung
+ * @param {*} tourId ID der zu löschenden Tour
+ * @returns {Promise} - Anzahl der gelöschten Einträge. Sollte 1 sein, wenn erfolgreich
+ */
+const tourLoeschen = async (db, tourId) => {
+  const res = await db.query('DELETE FROM touren WHERE id = $1', [tourId])
+
+  return res.rowCount
+}
+
 // Exportieren der Funktionen
 module.exports = {
   benutzerAnlegen,
@@ -224,4 +236,5 @@ module.exports = {
   getTourenVonBenutzer,
   tourHinzufuegen,
   updateTour,
+  tourLoeschen,
 }

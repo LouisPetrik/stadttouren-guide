@@ -30,7 +30,7 @@
 
 <body>
   <div id="map" class="map"></div>
-  <button class="speichern-button" onclick="tourUpdaten()">Speichern</button>
+  <button disabled="true" class="speichern-button" onclick="tourUpdaten()">Speichern</button>
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
@@ -72,9 +72,19 @@
 
       ],
       createMarker: function (i, waypoint) {
-        return L.marker(waypoint.latLng, { draggable: true }).on('click', function () {
-          //removeWaypoint(i)
-        })
+        //return L.marker(waypoint.latLng, { draggable: true }).on('click', function () {//removeWaypoint(i)})
+        const marker = L.marker(waypoint.latLng, { draggable: true }).bindPopup("Waypoint " + (i + 1))
+
+        marker.on('popupopen', function(e) {
+          var removeButton = L.DomUtil.create('button', '', marker.getPopup().getContent());
+          removeButton.textContent = "Remove Waypoint";
+          L.DomEvent.on(removeButton, 'click', function() {
+            routingControl.spliceWaypoints(i, 1);
+            marker.closePopup();
+          });
+        });
+
+        return marker 
         
       },
 
@@ -93,7 +103,31 @@
       }),
     }).addTo(map)
 
-    const waypoints = [];
+    let previousWaypoints = [];
+
+    let speichernButton = document.querySelector(".speichern-button")
+    // set the speichern button to disabled
+    
+
+
+    routingControl.on('waypointschanged', function (e) {
+      let currentWaypoints = routingControl.getWaypoints();
+
+      if (currentWaypoints.length > 2) {
+        speichernButton.disabled = false;
+      } 
+
+      console.log("Current way points: ", currentWaypoints)
+
+      if (currentWaypoints !== previousWaypoints) {
+          // Waypoints have changed, show the "save tour" button
+          console.log("something changed")
+          // Update previousWaypoints for next comparison
+          previousWaypoints = currentWaypoints;
+      }
+    })
+
+    let waypoints = [];
 
 
     map.on('click', function (e) {

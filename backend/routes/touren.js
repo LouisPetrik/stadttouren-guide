@@ -119,7 +119,20 @@ router.get('/tour', (req, res) => {
   })
 })
 
+/* 
 router.get('/neue-tour', (req, res) => {
+  // Nutzer muss eingeloggt sein, um eine Tour zu erstellen, damit Nutzer in DB zugewiesen werden kann.
+  if (req.isAuthenticated()) {
+    res.render('neue-tour', {
+      layout: false,
+    })
+  } else {
+    res.redirect('/login')
+  } 
+})*/
+
+// Für das Neu-Anlegen einer Tour
+router.get('/tour-bearbeiten/neu', (req, res) => {
   // Nutzer muss eingeloggt sein, um eine Tour zu erstellen, damit Nutzer in DB zugewiesen werden kann.
   if (req.isAuthenticated()) {
     res.render('neue-tour', {

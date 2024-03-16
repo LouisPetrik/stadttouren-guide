@@ -18,7 +18,9 @@ CREATE TABLE touren (
     benutzer_id INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
     beschreibung TEXT,
-    punkte JSONB, 
+    punkte JSONB,
+    distanz float DEFAULT 0,
+    dauer float DEFAULT 0, 
     CONSTRAINT fk_benutzer
       FOREIGN KEY(benutzer_id) 
 	  REFERENCES benutzer(id)

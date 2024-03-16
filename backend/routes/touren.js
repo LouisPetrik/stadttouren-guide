@@ -58,7 +58,7 @@ router.post('/tour-bearbeiten/:id', async (req, res) => {
     console.log('Nutzer moechte Tour bearbeiten: ', tourId)
 
     // Body müssen [{lat: 1, lng: 2}, {lat: 3, lng: 4}, ...] sein
-    console.log('Inhalt des Body: ', req.body.punkte)
+    console.log('TOUR Bearbeiten: Inhalt des Body: ', req.body)
 
     // Ab hier muss validiert werden, ob der Nutzer auch wirklich die Berechtigung hat, die Tour zu bearbeiten.
     // Auch wenn dies bereits für den GET-Request gemacht wurde, muss es hier nochmal gemacht werden, da der Nutzer auch die URL manipulieren könnte.
@@ -78,10 +78,12 @@ router.post('/tour-bearbeiten/:id', async (req, res) => {
       console.log('POST: Benutzer hat Rechte zum Bearbeiten')
 
       // Hier wird die Tour bearbeitet
-      // zunächst die Punkte zu JSON String umwandeln
-      const punkteJSON = JSON.stringify(req.body.punkte)
 
-      await updateTour(req.db, tourId, punkteJSON)
+      // Destrukturierung des Body
+      const { punkte, distanz, dauer } = req.body
+
+      // zunächst die Punkte zu JSON String umwandeln
+      await updateTour(req.db, tourId, JSON.stringify(punkte), distanz, dauer)
 
       res.send('Erfolgreich, Rechte zum Bearbeiten vorhanden')
       return
@@ -148,7 +150,7 @@ router.get('/tour-bearbeiten/neu', (req, res) => {
 // Insoferne erfolgreich, leitet auf /tour-bearbeiten/:id weiter.
 router.post('/neue-tour', async (req, res) => {
   if (req.isAuthenticated()) {
-    const { punkte } = req.body
+    const { punkte, distanz, dauer } = req.body
     const benutzer_id = req.user[0].id
 
     console.log('Tour erstellt von', benutzer_id)
@@ -160,6 +162,8 @@ router.post('/neue-tour', async (req, res) => {
       'Neue Tour',
       'Beschreibung folgt',
       JSON.stringify(punkte), // müssen die weiter formatiert werden?
+      distanz,
+      dauer,
       benutzer_id
     )
 
@@ -255,6 +259,12 @@ router.post('/tour-loeschen', async (req, res) => {
   } else {
     res.redirect('/login')
   }
+})
+
+// Nur zum Testen
+router.get('/get-touren', async (req, res) => {
+  const routes = await getTouren(req.db)
+  res.json(routes)
 })
 
 module.exports = router

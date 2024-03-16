@@ -134,7 +134,7 @@ INNER JOIN
     benutzer b ON t.benutzer_id = b.id;
     */
   const res = await db.query(
-    'SELECT t.id, t.name, t.beschreibung, b.benutzername FROM touren t INNER JOIN benutzer b ON t.benutzer_id = b.id'
+    'SELECT t.id, t.name, t.beschreibung, t.distanz, t.dauer, b.benutzername FROM touren t INNER JOIN benutzer b ON t.benutzer_id = b.id'
   )
 
   return res.rows
@@ -175,21 +175,18 @@ const getTourenVonBenutzer = async (db, benutzername) => {
  * @param {*} benutzer_id ID des Benutzers, der die Tour hinzufügt
  * @returns {Promise} - Gibt die hinzugefügte Tour zurück
  */
-const tourHinzufuegen = async (db, name, beschreibung, punkte, benutzer_id) => {
-  console.log(
-    'DB aufruf mit:',
-    'name:',
-    name,
-    'beschreibung:',
-    beschreibung,
-    'punkte:',
-    punkte,
-    'benutzer id:',
-    benutzer_id
-  )
+const tourHinzufuegen = async (
+  db,
+  name,
+  beschreibung,
+  punkte,
+  distanz,
+  dauer,
+  benutzer_id
+) => {
   const res = await db.query(
-    'INSERT INTO touren (name, beschreibung, punkte, benutzer_id) VALUES ($1, $2, $3, $4) RETURNING *',
-    [name, beschreibung, punkte, benutzer_id]
+    'INSERT INTO touren (name, beschreibung, punkte, distanz, dauer, benutzer_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+    [name, beschreibung, punkte, distanz, dauer, benutzer_id]
   )
   return res.rows[0]
 }
@@ -200,13 +197,15 @@ const tourHinzufuegen = async (db, name, beschreibung, punkte, benutzer_id) => {
  * @param {*} db Datenbankverbindung
  * @param {*} tourId ID in der DB, selbe wie in der URL
  * @param {*} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
+ * @param {*} distanz Distanz der Tour
+ * @param {*} dauer Dauer der Tour
  * @returns {Promise} - Gibt die aktualisierte Tour zurück
  */
-const updateTour = async (db, tourId, punkte) => {
-  const res = await db.query('UPDATE touren SET punkte = $1 WHERE id = $2', [
-    punkte,
-    tourId,
-  ])
+const updateTour = async (db, tourId, punkte, distanz, dauer) => {
+  const res = await db.query(
+    'UPDATE touren SET punkte = $1, distanz = $2, dauer = $3 WHERE id = $4',
+    [punkte, distanz, dauer, tourId]
+  )
   return res.rows
 }
 

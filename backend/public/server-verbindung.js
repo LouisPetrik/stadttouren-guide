@@ -16,7 +16,11 @@ function tourUpdaten() {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ punkte: getPunkte() }),
+    body: JSON.stringify({
+      punkte: getPunkte(),
+      dauer: dauer,
+      distanz: distanz,
+    }),
   })
     .then((res) => res.json())
     .then((data) => {

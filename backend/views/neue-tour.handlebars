@@ -46,6 +46,11 @@
     // Initialisiert die Karte und setzt die Ansicht auf einen spezifischen Punkt und Zoomlevel
     var map = L.map('map').setView([52.151222, 9.961226], 13)
 
+    // Werden überschrieben von funktion tourDaten in der util.js. Ging nicht als global variable, da Berechnung an Event listener gebunden ist... 
+    let distanz = 0;
+    let dauer = 0;
+
+
 
     function tourInitialSpeichern() {
       // ID der Tour aus URL holen
@@ -57,7 +62,7 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ punkte: getPunkte() }),
+        body: JSON.stringify({ punkte: getPunkte(), distanz: distanz, dauer: dauer}),
       })
         .then((res) => res.json())
         .then((data) => {
@@ -154,6 +159,9 @@
     })
 
     let waypoints = [];
+
+    // Berechnen der Distanz und Dauer der Tour 
+    routingControl.on('routesfound', tourDaten);
 
 
     map.on('click', function (e) {

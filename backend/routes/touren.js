@@ -9,6 +9,7 @@ const {
   getTourenVonBenutzer,
   updateTour,
   tourLoeschen,
+  updateTourMetadaten,
 } = require('../db')
 const router = express.Router()
 
@@ -255,6 +256,49 @@ router.post('/tour-loeschen', async (req, res) => {
       res
         .status(404)
         .json({ success: false, message: 'Tour konnte nicht geloescht werden' })
+    }
+  } else {
+    res.redirect('/login')
+  }
+})
+
+// Umbenennen und Ändern der Beschreibung von Touren
+router.post('/tour-metadaten', async (req, res) => {
+  if (req.isAuthenticated()) {
+    const { tourId, art, text } = req.body
+
+    // Abfangen von unerlaubten Metadaten, da mit der art der Metadaten auch die Spalte in der DB bestimmt wird
+    if (art !== 'name' && art !== 'beschreibung') {
+      res
+        .status(400)
+        .json({ success: false, message: 'Ungültige Art der Metadaten' })
+      return
+    }
+
+    const benutzername = req.user[0].benutzername
+
+    console.log('Nutzer moechte Tour umbenennen: ', tourId)
+
+    // hier noch testen, ob Nutzer auch wirklich die Berechtigung hat, die Tour zu bearbeiten
+
+    // Hier werden die Metadaten der Tour geändert
+
+    const rowCount = await updateTourMetadaten(req.db, tourId, art, text)
+
+    if (rowCount > 0) {
+      res
+        .status(200)
+        .json({
+          success: true,
+          message: 'Name / Beschreibung erfolgreich geändert',
+        })
+    } else {
+      res
+        .status(404)
+        .json({
+          success: false,
+          message: 'Name / Beschreibung konnte nicht geändert werden',
+        })
     }
   } else {
     res.redirect('/login')

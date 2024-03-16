@@ -221,6 +221,22 @@ const tourLoeschen = async (db, tourId) => {
   return res.rowCount
 }
 
+/**
+ *
+ * @param {*} db Datenbankverbindung
+ * @param {*} tourId ID der Tour in DB
+ * @param {*} art Ob Name oder Beschreibung der Tour
+ * @param {*} text Neuer Wert für Name oder Beschreibung
+ * @returns
+ */
+const updateTourMetadaten = async (db, tourId, art, text) => {
+  const res = await db.query(`UPDATE touren SET ${art} = $1 WHERE id = $2`, [
+    text,
+    tourId,
+  ])
+  return res.rows
+}
+
 // Exportieren der Funktionen
 module.exports = {
   benutzerAnlegen,
@@ -236,4 +252,5 @@ module.exports = {
   tourHinzufuegen,
   updateTour,
   tourLoeschen,
+  updateTourMetadaten,
 }

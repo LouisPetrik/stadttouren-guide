@@ -39,8 +39,11 @@
     <ul class="list-group">
       {{#each touren}}
       <li class="list-group-item">
-        <a href="/tour/{{this.id}}">{{this.name}}</a>
-
+        <h3 style="font-size: 20px; padding: 0; margin: 0;">{{this.name}}</h3>
+        <br />
+        <span>{{this.beschreibung}}</span>
+        <br />
+        <button class="btn btn-info"><a class="btn-link" href="/tour/{{this.id}}">Starten</a></button>
         <button class="btn btn-primary"><a class="btn-link" href="/tour-bearbeiten/{{this.id}}">Bearbeiten</a></button>
         <button class="btn btn-danger"><a data-tour-id="{{this.id}}" class="btn-link"
             onclick="tourLoeschen(this)">Löschen</a></button>

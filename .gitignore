@@ -1,6 +1,4 @@
-/osrm-server/data
-/backend/data
-/abgabe/data  
+/app/data
 
 node_modules
 

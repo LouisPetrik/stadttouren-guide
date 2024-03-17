@@ -1,5 +1,8 @@
 # stadttouren-guide
 
+## Architektur der Anwendung 
+
+![Architektur](stadttouren-architektur.png)
 
 ## Lokal ausführen 
 

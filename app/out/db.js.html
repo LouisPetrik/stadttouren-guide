@@ -69,7 +69,7 @@ const getBenutzerById = async (db, id) => {
 /**
  * Falls Benutzer Account schließen moechte
  * @param {*} db Datenbankverbindung
- * @param {*} benutzername Selbstgewählter Benutzername
+ * @param {string} benutzername Selbstgewählter Benutzername
  * @returns {Promise} - ausstehend
  */
 const benutzerLoeschen = async (db, benutzername) => {
@@ -84,8 +84,8 @@ const benutzerLoeschen = async (db, benutzername) => {
 /**
  * Überprüft Passworteingabe bei der Anmeldung
  * @param {*} db Datenbankverbindung
- * @param {*} email Email-Adresse
- * @param {*} passwort im Form eingegebenes Passwort
+ * @param {string} email Email-Adresse
+ * @param {string} passwort im Form eingegebenes Passwort
  * @returns {Promise} - Gibt den erfolgreich angemeldeten Benutzer zurück
  */
 const benutzerPruefen = async (db, email, passwort) => {
@@ -116,8 +116,8 @@ const benutzerPruefen = async (db, email, passwort) => {
 /**
  * Falls Nutzer sein Passwort ändernt moechte
  * @param {*} db Datenbankverbindung
- * @param {*} benutzername Selbstgewählter Benutzername
- * @param {*} passwort Neues Passwort
+ * @param {string} benutzername Selbstgewählter Benutzername
+ * @param {string} passwort Neues Passwort
  * @returns {Promise} - ausstehend
  */
 const passwortAendern = async (db, benutzername, passwort) => {
@@ -131,8 +131,8 @@ const passwortAendern = async (db, benutzername, passwort) => {
 /**
  * Prüfen, ob der Benutzer existiert
  * @param {*} db Datenbankverbindung
- * @param {*} benutzername Selbstgewählter Benutzername
- * @param {*} email Hinterlegte Email-Adresse
+ * @param {string} benutzername Selbstgewählter Benutzername
+ * @param {string} email Hinterlegte Email-Adresse
  * @returns {Promise} - Gibt die gefundenen Benutzer zurück
  */
 const benutzerExistiert = async (db, benutzername, email) => {
@@ -162,7 +162,7 @@ INNER JOIN
     benutzer b ON t.benutzer_id = b.id;
     */
   const res = await db.query(
-    'SELECT t.id, t.name, t.beschreibung, b.benutzername FROM touren t INNER JOIN benutzer b ON t.benutzer_id = b.id'
+    'SELECT t.id, t.name, t.beschreibung, t.distanz, t.dauer, b.benutzername FROM touren t INNER JOIN benutzer b ON t.benutzer_id = b.id'
   )
 
   return res.rows
@@ -171,7 +171,7 @@ INNER JOIN
 /**
  * Tour basierend auf ID holen, übergeben in URL Parameter
  * @param {*} db Datenbankverbindung
- * @param {*} id ID der Tour in DB, meist in URL übergebne
+ * @param {number} id ID der Tour in DB, meist in URL übergebne
  * @returns alle Felder der jeweiligen Tour
  */
 const getTourById = async (db, id) => {
@@ -183,7 +183,7 @@ const getTourById = async (db, id) => {
  * gibt alle Touren von einem bestimmten Benutzer zurück.
  * Verwendung: profil, benutzer/&lt;benutzername>
  * @param {*} db
- * @param {*} benutzername
+ * @param {string} benutzername
  * @returns {Promise} - Gibt alle Touren des Benutzers zurück
  */
 const getTourenVonBenutzer = async (db, benutzername) => {
@@ -196,16 +196,25 @@ const getTourenVonBenutzer = async (db, benutzername) => {
 
 /**
  * Fügt eine Tour hinzu
- * @param {*} db
- * @param {*} name
- * @param {*} beschreibung
- * @param {*} benutzer_id
+ * @param {*} db Datenbankverbindung
+ * @param {string} name Name der Tour
+ * @param {string} beschreibung Beschreibung der Tour
+ * @param {array} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
+ * @param {number} benutzer_id ID des Benutzers, der die Tour hinzufügt
  * @returns {Promise} - Gibt die hinzugefügte Tour zurück
  */
-const tourHinzufuegen = async (db, name, beschreibung, benutzer_id) => {
+const tourHinzufuegen = async (
+  db,
+  name,
+  beschreibung,
+  punkte,
+  distanz,
+  dauer,
+  benutzer_id
+) => {
   const res = await db.query(
-    'INSERT INTO touren (name, beschreibung, benutzer_id) VALUES ($1, $2, $3, $4) RETURNING *',
-    [name, beschreibung, benutzer_id]
+    'INSERT INTO touren (name, beschreibung, punkte, distanz, dauer, benutzer_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+    [name, beschreibung, punkte, distanz, dauer, benutzer_id]
   )
   return res.rows[0]
 }
@@ -214,13 +223,44 @@ const tourHinzufuegen = async (db, name, beschreibung, benutzer_id) => {
  * Genutzt, um bestehende Touren in hinsicht auf Punkte zu aktualisieren.
  * Genutzt in Bearbeiten von Touren im Profil bzw. POST: /tour-bearbeiten/:tourId
  * @param {*} db Datenbankverbindung
- * @param {*} tourId ID in der DB, selbe wie in der URL
- * @param {*} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
+ * @param {number} tourId ID in der DB, selbe wie in der URL
+ * @param {array} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
+ * @param {number} distanz Distanz der Tour
+ * @param {number} dauer Dauer der Tour
  * @returns {Promise} - Gibt die aktualisierte Tour zurück
  */
-const updateTour = async (db, tourId, punkte) => {
-  const res = await db.query('UPDATE touren SET punkte = $1 WHERE id = $2', [
-    punkte,
+const updateTour = async (db, tourId, punkte, distanz, dauer) => {
+  const res = await db.query(
+    'UPDATE touren SET punkte = $1, distanz = $2, dauer = $3 WHERE id = $4',
+    [punkte, distanz, dauer, tourId]
+  )
+  return res.rows
+}
+
+/**
+ * Loeschen einer Tour per ID, ausgeführt in /profil
+ * @param {*} db Datenbankverbindung
+ * @param {number} tourId ID der zu löschenden Tour
+ * @returns {Promise} - Anzahl der gelöschten Einträge. Sollte 1 sein, wenn erfolgreich
+ */
+const tourLoeschen = async (db, tourId) => {
+  const res = await db.query('DELETE FROM touren WHERE id = $1', [tourId])
+
+  return res.rowCount
+}
+
+/**
+ * Updated Beschreibung oder Name einer Tour in der Datenbank durch Aktion von User.
+ * Aufgerufen in /profil.
+ * @param {*} db Datenbankverbindung
+ * @param {number} tourId ID der Tour in DB
+ * @param {string} art Ob Name oder Beschreibung der Tour
+ * @param {string} text Neuer Wert für Name oder Beschreibung
+ * @returns {Promise} Betroffene Zeile
+ */
+const updateTourMetadaten = async (db, tourId, art, text) => {
+  const res = await db.query(`UPDATE touren SET ${art} = $1 WHERE id = $2`, [
+    text,
     tourId,
   ])
   return res.rows
@@ -240,6 +280,8 @@ module.exports = {
   getTourenVonBenutzer,
   tourHinzufuegen,
   updateTour,
+  tourLoeschen,
+  updateTourMetadaten,
 }
 </code></pre>
         </article>
@@ -251,13 +293,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#benutzerAnlegen">benutzerAnlegen</a></li><li><a href="global.html#benutzerExistiert">benutzerExistiert</a></li><li><a href="global.html#benutzerLoeschen">benutzerLoeschen</a></li><li><a href="global.html#benutzerPruefen">benutzerPruefen</a></li><li><a href="global.html#db">db</a></li><li><a href="global.html#getBenutzer">getBenutzer</a></li><li><a href="global.html#getBenutzerById">getBenutzerById</a></li><li><a href="global.html#getPunkte">getPunkte</a></li><li><a href="global.html#getServiceURL">getServiceURL</a></li><li><a href="global.html#getTourById">getTourById</a></li><li><a href="global.html#getTouren">getTouren</a></li><li><a href="global.html#getTourenVonBenutzer">getTourenVonBenutzer</a></li><li><a href="global.html#passwortAendern">passwortAendern</a></li><li><a href="global.html#positionAbfragen">positionAbfragen</a></li><li><a href="global.html#removeWaypoint">removeWaypoint</a></li><li><a href="global.html#tourHinzufuegen">tourHinzufuegen</a></li><li><a href="global.html#tourUpdaten">tourUpdaten</a></li><li><a href="global.html#updateTour">updateTour</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#benutzerAnlegen">benutzerAnlegen</a></li><li><a href="global.html#benutzerExistiert">benutzerExistiert</a></li><li><a href="global.html#benutzerLoeschen">benutzerLoeschen</a></li><li><a href="global.html#benutzerPruefen">benutzerPruefen</a></li><li><a href="global.html#db">db</a></li><li><a href="global.html#getBenutzer">getBenutzer</a></li><li><a href="global.html#getBenutzerById">getBenutzerById</a></li><li><a href="global.html#getPunkte">getPunkte</a></li><li><a href="global.html#getServiceURL">getServiceURL</a></li><li><a href="global.html#getTourById">getTourById</a></li><li><a href="global.html#getTouren">getTouren</a></li><li><a href="global.html#getTourenVonBenutzer">getTourenVonBenutzer</a></li><li><a href="global.html#metadatenAendern">metadatenAendern</a></li><li><a href="global.html#passwortAendern">passwortAendern</a></li><li><a href="global.html#positionAbfragen">positionAbfragen</a></li><li><a href="global.html#removeWaypoint">removeWaypoint</a></li><li><a href="global.html#tourDaten">tourDaten</a></li><li><a href="global.html#tourHinzufuegen">tourHinzufuegen</a></li><li><a href="global.html#tourLoeschen">tourLoeschen</a></li><li><a href="global.html#tourUpdaten">tourUpdaten</a></li><li><a href="global.html#updateTour">updateTour</a></li><li><a href="global.html#updateTourMetadaten">updateTourMetadaten</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Mar 16 2024 09:24:50 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Mar 17 2024 14:24:46 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

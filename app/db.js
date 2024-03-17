@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt')
 /**
  * Benutzer anlegen
  * @param {*} db Datenbankverbindung
- * @param {*} benutzername Selbstgewählter Benutzername
- * @param {*} passwort Selbstgewähltes Passwort
- * @param {*} email Hinterlegte Email-Adresse
+ * @param {string} benutzername Selbstgewählter Benutzername
+ * @param {string} passwort Selbstgewähltes Passwort
+ * @param {string} email Hinterlegte Email-Adresse
  * @returns {Promise} - Gibt den angelegten Benutzer zurück
  */
 const benutzerAnlegen = async (db, benutzername, passwort, email) => {
@@ -30,7 +30,7 @@ const getBenutzer = async (db) => {
 /**
  * Benutzer basierend auf ID holen, genutzt beim Authentifizieren u. a.
  * @param {*} db
- * @param {*} id
+ * @param {number} id
  * @returns {Promise} - Gibt den gefundenen Benutzer zurück
  */
 const getBenutzerById = async (db, id) => {
@@ -41,7 +41,7 @@ const getBenutzerById = async (db, id) => {
 /**
  * Falls Benutzer Account schließen moechte
  * @param {*} db Datenbankverbindung
- * @param {*} benutzername Selbstgewählter Benutzername
+ * @param {string} benutzername Selbstgewählter Benutzername
  * @returns {Promise} - ausstehend
  */
 const benutzerLoeschen = async (db, benutzername) => {
@@ -56,8 +56,8 @@ const benutzerLoeschen = async (db, benutzername) => {
 /**
  * Überprüft Passworteingabe bei der Anmeldung
  * @param {*} db Datenbankverbindung
- * @param {*} email Email-Adresse
- * @param {*} passwort im Form eingegebenes Passwort
+ * @param {string} email Email-Adresse
+ * @param {string} passwort im Form eingegebenes Passwort
  * @returns {Promise} - Gibt den erfolgreich angemeldeten Benutzer zurück
  */
 const benutzerPruefen = async (db, email, passwort) => {
@@ -88,8 +88,8 @@ const benutzerPruefen = async (db, email, passwort) => {
 /**
  * Falls Nutzer sein Passwort ändernt moechte
  * @param {*} db Datenbankverbindung
- * @param {*} benutzername Selbstgewählter Benutzername
- * @param {*} passwort Neues Passwort
+ * @param {string} benutzername Selbstgewählter Benutzername
+ * @param {string} passwort Neues Passwort
  * @returns {Promise} - ausstehend
  */
 const passwortAendern = async (db, benutzername, passwort) => {
@@ -103,8 +103,8 @@ const passwortAendern = async (db, benutzername, passwort) => {
 /**
  * Prüfen, ob der Benutzer existiert
  * @param {*} db Datenbankverbindung
- * @param {*} benutzername Selbstgewählter Benutzername
- * @param {*} email Hinterlegte Email-Adresse
+ * @param {string} benutzername Selbstgewählter Benutzername
+ * @param {string} email Hinterlegte Email-Adresse
  * @returns {Promise} - Gibt die gefundenen Benutzer zurück
  */
 const benutzerExistiert = async (db, benutzername, email) => {
@@ -143,7 +143,7 @@ INNER JOIN
 /**
  * Tour basierend auf ID holen, übergeben in URL Parameter
  * @param {*} db Datenbankverbindung
- * @param {*} id ID der Tour in DB, meist in URL übergebne
+ * @param {number} id ID der Tour in DB, meist in URL übergebne
  * @returns alle Felder der jeweiligen Tour
  */
 const getTourById = async (db, id) => {
@@ -155,7 +155,7 @@ const getTourById = async (db, id) => {
  * gibt alle Touren von einem bestimmten Benutzer zurück.
  * Verwendung: profil, benutzer/<benutzername>
  * @param {*} db
- * @param {*} benutzername
+ * @param {string} benutzername
  * @returns {Promise} - Gibt alle Touren des Benutzers zurück
  */
 const getTourenVonBenutzer = async (db, benutzername) => {
@@ -169,10 +169,10 @@ const getTourenVonBenutzer = async (db, benutzername) => {
 /**
  * Fügt eine Tour hinzu
  * @param {*} db Datenbankverbindung
- * @param {*} name Name der Tour
- * @param {*} beschreibung Beschreibung der Tour
- * @param {*} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
- * @param {*} benutzer_id ID des Benutzers, der die Tour hinzufügt
+ * @param {string} name Name der Tour
+ * @param {string} beschreibung Beschreibung der Tour
+ * @param {array} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
+ * @param {number} benutzer_id ID des Benutzers, der die Tour hinzufügt
  * @returns {Promise} - Gibt die hinzugefügte Tour zurück
  */
 const tourHinzufuegen = async (
@@ -195,10 +195,10 @@ const tourHinzufuegen = async (
  * Genutzt, um bestehende Touren in hinsicht auf Punkte zu aktualisieren.
  * Genutzt in Bearbeiten von Touren im Profil bzw. POST: /tour-bearbeiten/:tourId
  * @param {*} db Datenbankverbindung
- * @param {*} tourId ID in der DB, selbe wie in der URL
- * @param {*} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
- * @param {*} distanz Distanz der Tour
- * @param {*} dauer Dauer der Tour
+ * @param {number} tourId ID in der DB, selbe wie in der URL
+ * @param {array} punkte JSON String von GPS Koordinaten, format: [{lat: 123, lng: 123}, ...]. Wird vorher stringified
+ * @param {number} distanz Distanz der Tour
+ * @param {number} dauer Dauer der Tour
  * @returns {Promise} - Gibt die aktualisierte Tour zurück
  */
 const updateTour = async (db, tourId, punkte, distanz, dauer) => {
@@ -212,7 +212,7 @@ const updateTour = async (db, tourId, punkte, distanz, dauer) => {
 /**
  * Loeschen einer Tour per ID, ausgeführt in /profil
  * @param {*} db Datenbankverbindung
- * @param {*} tourId ID der zu löschenden Tour
+ * @param {number} tourId ID der zu löschenden Tour
  * @returns {Promise} - Anzahl der gelöschten Einträge. Sollte 1 sein, wenn erfolgreich
  */
 const tourLoeschen = async (db, tourId) => {
@@ -222,12 +222,13 @@ const tourLoeschen = async (db, tourId) => {
 }
 
 /**
- *
+ * Updated Beschreibung oder Name einer Tour in der Datenbank durch Aktion von User.
+ * Aufgerufen in /profil.
  * @param {*} db Datenbankverbindung
- * @param {*} tourId ID der Tour in DB
- * @param {*} art Ob Name oder Beschreibung der Tour
- * @param {*} text Neuer Wert für Name oder Beschreibung
- * @returns
+ * @param {number} tourId ID der Tour in DB
+ * @param {string} art Ob Name oder Beschreibung der Tour
+ * @param {string} text Neuer Wert für Name oder Beschreibung
+ * @returns {Promise} Betroffene Zeile
  */
 const updateTourMetadaten = async (db, tourId, art, text) => {
   const res = await db.query(`UPDATE touren SET ${art} = $1 WHERE id = $2`, [

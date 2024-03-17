@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: public/profil.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,81 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: public/profil.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Umschreiben von Name oder Beschreibung
+ * @param {HTMLElement} el - Das Element, das umbenannt werden soll
+ * @param {string} art - 'name' oder 'beschreibung', je nachdem, was umbenannt werden soll
+ */
+function metadatenAendern(el, art) {
+  // bisheriger Name
+  const textContentAktuell = el.textContent
 
+  const promptFrage =
+    art === 'name' ? 'Neuer Name der Tour:' : 'Neue Beschreibung der Tour:'
+  // Mit Alert nach dem Namen fragen
+  const textContentNeu = prompt(promptFrage, textContentAktuell)
 
-    <h3> </h3>
+  // Wenn der Nutzer auf Abbrechen klickt, wird nichts gemacht
+  if (textContentNeu === null) {
+    return
+  }
 
+  // Ansonsten wird neuer Name / Beschreibung an Server geschickt
 
+  // POST request an den Server
+  fetch('/tour-metadaten', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tourId: el.getAttribute('data-tour-id'),
+      art: art,
+      text: textContentNeu,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log('Erfolgreich:', data)
+      // Seite neu laden, damit Änderungen wirksam werden
+      window.location.reload()
+    })
+}
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Loeschen einer Tour
+ * @param {HTMLElement} button
+ */
+function tourLoeschen(button) {
+  // POST request an den Server zur loeschung
+  fetch('/tour-loeschen', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tourId: button.getAttribute('data-tour-id'),
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log('Erfolgreich:', data)
+      // Seite neu laden
+      window.location.reload()
+    })
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

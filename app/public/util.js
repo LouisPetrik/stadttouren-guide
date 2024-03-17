@@ -1,6 +1,6 @@
 /**
  * Entwernt einen Wegpunkt aus der Liste der Wegpunkte
- * @param {*} index in der Liste der Wegpunkte
+ * @param {array} index in der Liste der Wegpunkte
  */
 function removeWaypoint(index) {
   var waypoints = routingControl.getWaypoints()
@@ -28,7 +28,7 @@ function getServiceURL() {
 
 /**
  * Gibt die Koordinaten der Wegpunkte zurück, als Array von Objekten mit lat und lng
- * @returns {Array} Array mit Koordinaten der Wegpunkte
+ * @returns {array} Array mit Koordinaten der Wegpunkte
  */
 function getPunkte() {
   var waypoints = routingControl.getWaypoints()
